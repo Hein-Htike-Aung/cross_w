@@ -16,7 +16,7 @@ export const io = new Server();
       },
     });
 
-    await sequelize.sync({ alter: true });
+    // await sequelize.sync({ alter: true });
     server.listen(port, () => {
       console.info(`Listening: http://localhost:${port}`);
     });
