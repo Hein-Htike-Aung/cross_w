@@ -7,8 +7,11 @@ import 'reflect-metadata';
 import fileUpload from 'express-fileupload';
 import notFound from './middlewares/notFound';
 import errorHandler from './middlewares/errorHandler';
+import { model_list } from './utils/model_list';
 
 const app = express();
+
+model_list;
 
 app.use(
   cors({
