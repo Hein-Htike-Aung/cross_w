@@ -8,6 +8,7 @@ import fileUpload from 'express-fileupload';
 import notFound from './middlewares/notFound';
 import errorHandler from './middlewares/errorHandler';
 import { model_list } from './utils/model_list';
+import AuthRouter from './modules/auth/routes/auth.route';
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.use(
     tempFileDir: '/tmp/',
   }),
 );
+
+app.use('/api', AuthRouter);
 
 app.use(notFound);
 app.use(errorHandler);
