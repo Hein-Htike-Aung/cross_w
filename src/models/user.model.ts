@@ -43,7 +43,6 @@ export default class User extends Model<
   declare notification_on: boolean;
   declare system_notification: boolean;
   declare image_base_url: string;
-
   declare email_verified_at: CreationOptional<Date>;
 
   declare created_at: CreationOptional<Date>;
@@ -70,6 +69,7 @@ User.init(
     },
     phone: {
       type: DataTypes.STRING,
+      unique: true,
     },
     home_no: {
       type: DataTypes.STRING,

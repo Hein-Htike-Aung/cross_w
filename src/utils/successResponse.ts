@@ -4,7 +4,7 @@ import { AppMessage, languages } from '../constants/app_message';
 const successResponse = (
   req: Request,
   res: Response,
-  message: never | null | undefined,
+  message: any,
   data = {},
 ) => {
   const language = req.headers['language'] as languages;
@@ -12,7 +12,9 @@ const successResponse = (
   res.status(200).json({
     status: true,
     statusCode: 200,
-    message: message ?? AppMessage.retrievedSuccessful[language ?? 'en'],
+    message: message
+      ? message[language ?? 'en']
+      : AppMessage.retrievedSuccessful[language ?? 'en'],
     data,
   });
 };

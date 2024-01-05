@@ -8,12 +8,15 @@ const errorResponse = (
   message: any,
   errors = {},
 ) => {
+  console.log(message);
   const language = req.headers['language'] as languages;
 
   res.status(statusCode).json({
     status: false,
     statusCode,
-    message: message ?? AppMessage.somethingWentWrong[language ?? 'en'],
+    message: message
+      ? message[language ?? 'en']
+      : AppMessage.somethingWentWrong[language ?? 'en'],
     errors,
   });
 };

@@ -44,4 +44,19 @@ export const AppMessage = {
     my: '',
     cn: '',
   },
+  fileNotFound: {
+    en: 'file not found',
+    my: '',
+    cn: '',
+  },
+  invalidCredential: {
+    en: 'Invalid credential',
+    my: '',
+    cn: '',
+  },
+  unauthorized: {
+    en: 'Unauthorized',
+    my: 'ဤလုပ်ဆောင်ချက်အား လုပ်ဆောင်ခွင့်မရှိပါ။',
+    cn: '无法访问 请稍后重试',
+  },
 };

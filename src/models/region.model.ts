@@ -6,15 +6,15 @@ import {
   Model,
 } from 'sequelize';
 import { sequelize } from '.';
-import Region from './region.model';
+import Country from './country.model';
 
-export default class Township extends Model<
-  InferAttributes<Township>,
-  InferCreationAttributes<Township>
+export default class Region extends Model<
+  InferAttributes<Region>,
+  InferCreationAttributes<Region>
 > {
   declare id: CreationOptional<number>;
 
-  declare region_id: number;
+  declare country_id: number;
 
   declare name: string;
 
@@ -22,18 +22,18 @@ export default class Township extends Model<
   declare updated_at: CreationOptional<Date>;
 }
 
-Township.init(
+Region.init(
   {
     id: {
       primaryKey: true,
       type: DataTypes.INTEGER,
       autoIncrement: true,
     },
-    region_id: {
+    country_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'region',
+        model: 'country',
         key: 'id',
       },
     },
@@ -55,20 +55,20 @@ Township.init(
   {
     sequelize,
     underscored: true,
-    modelName: 'Township',
-    tableName: 'township',
+    modelName: 'Region',
+    tableName: 'region',
     timestamps: true,
     paranoid: false,
   },
 );
 
 /*  */
-Township.belongsTo(Region, {
-  foreignKey: 'region_id',
-  as: 'region',
+Region.belongsTo(Country, {
+  foreignKey: 'country_id',
+  as: 'country',
 });
 
-Region.hasMany(Township, {
-  foreignKey: 'region_id',
-  as: 'townships',
+Country.hasMany(Region, {
+  foreignKey: 'country_id',
+  as: 'regions',
 });

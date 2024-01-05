@@ -27,6 +27,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["/types.d.ts", "src/models/types.ts", "sample", "src", "test"],
+  "include": ["src", "test"],
   "exclude": ["tmp", "temp", "build", "node_modules"]
 }
