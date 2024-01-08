@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import { Request, Response } from 'express';
 import handleError from '../../../utils/handleError';
 import User from '../../../models/user.model';
@@ -7,6 +8,7 @@ import AuthService from '../../auth/services/auth.service';
 import successResponse from '../../../utils/successResponse';
 import { Sequelize } from 'sequelize';
 import { sequelize } from '../../../models';
+import { LOGIN_PROVIDER } from '../../../types';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -24,12 +26,20 @@ export default class UserController {
 
       const hashedPassword = await AuthService.encryptPassword(password);
 
-      await User.create({
+      const user = await User.create({
         ...req.body,
         password: hashedPassword,
+        provider: LOGIN_PROVIDER.PHONE,
       });
 
-      return successResponse(req, res, AppMessage.created);
+      const { access_token, refresh_token } =
+        AuthService.generateAuthToken<User>(existingUser, 'user');
+
+      return successResponse(req, res, null, {
+        access_token,
+        refresh_token,
+        ...omit(user.dataValues, 'password'),
+      });
     } catch (error) {
       handleError(req, res, error);
     }

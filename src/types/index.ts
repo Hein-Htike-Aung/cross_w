@@ -8,3 +8,10 @@ export enum CATEGORY {
   'CONTACT' = 'CONTACT',
   'NEW_ESTATE' = 'NEW_ESTATE',
 }
+
+export enum LOGIN_PROVIDER {
+  'GOOGLE' = 'GOOGLE',
+  'APPLE' = 'APPLE',
+  'FACEBOOK' = 'FACEBOOK',
+  'PHONE' = 'PHONE',
+}

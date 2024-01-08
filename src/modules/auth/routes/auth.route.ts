@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post('/v1/login', AuthController.login);
 
+router.post('/v1/loginWithProvider', AuthController.loginWithProvider);
+
 router.get('/v1/generate_token', [jwt_auth], AuthController.generateToken);
 
 router.post('/v1/change_password/:user_id', AuthController.changePassword);

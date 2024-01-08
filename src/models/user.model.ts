@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
-import { USER_TYPE } from '../types';
+import { LOGIN_PROVIDER, USER_TYPE } from '../types';
 import { sequelize } from '.';
 import Township from './township.model';
 
@@ -38,7 +38,7 @@ export default class User extends Model<
   declare facebook_token: CreationOptional<string>;
   declare is_update: boolean;
   declare provider_id: CreationOptional<string>;
-  declare provider: CreationOptional<string>;
+  declare provider: CreationOptional<LOGIN_PROVIDER>;
   declare country: string;
   declare notification_on: boolean;
   declare system_notification: boolean;
@@ -66,9 +66,11 @@ User.init(
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     phone: {
       type: DataTypes.STRING,
+      allowNull: true,
       unique: true,
     },
     home_no: {
@@ -92,6 +94,7 @@ User.init(
     },
     is_disable: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     type: {
       type: DataTypes.ENUM('COMPANY_AGENT', 'USER', 'AGENT'),
@@ -138,26 +141,31 @@ User.init(
     },
     is_update: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     provider_id: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
     provider: {
-      type: DataTypes.TEXT,
+      type: DataTypes.ENUM('GOOGLE', 'APPLE', 'FACEBOOK', 'PHONE'),
       allowNull: true,
     },
     country: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     notification_on: {
       type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     system_notification: {
       type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     image_base_url: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     email_verified_at: {
       type: DataTypes.DATE(6),

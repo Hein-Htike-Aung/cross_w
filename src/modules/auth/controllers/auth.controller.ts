@@ -13,7 +13,7 @@ import { get, omit } from 'lodash';
 export default class AuthController {
   static login = async (req: Request, res: Response) => {
     try {
-      const { phone, password, device_token } = req.body;
+      const { phone, password } = req.body;
 
       const user = await User.findOne({
         where: {
@@ -40,6 +40,49 @@ export default class AuthController {
         access_token,
         refresh_token,
         ...omit(user.dataValues, 'password'),
+      });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static loginWithProvider = async (req: Request, res: Response) => {
+    try {
+      const { provider_id, provider } = req.body;
+
+      const existingUser = await User.findOne({
+        where: {
+          provider,
+          provider_id,
+        },
+      });
+
+      if (existingUser) {
+        const { access_token, refresh_token } =
+          AuthService.generateAuthToken<User>(existingUser, 'user');
+
+        return successResponse(req, res, null, {
+          access_token,
+          refresh_token,
+          ...omit(existingUser.dataValues, 'password'),
+        });
+      }
+
+      const hashedPassword = await AuthService.encryptPassword(provider_id);
+
+      const newUser = await User.create({
+        ...req.body,
+        provider_id,
+        password: hashedPassword,
+      });
+
+      const { access_token, refresh_token } =
+        AuthService.generateAuthToken<User>(newUser, 'user');
+
+      return successResponse(req, res, null, {
+        access_token,
+        refresh_token,
+        ...omit(newUser.dataValues, 'password'),
       });
     } catch (error) {
       handleError(req, res, error);
