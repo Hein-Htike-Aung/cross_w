@@ -69,11 +69,11 @@ ObtainDetails.init(
       defaultValue: null,
     },
     long: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     lat: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     building_info: {

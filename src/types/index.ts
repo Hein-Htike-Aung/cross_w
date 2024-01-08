@@ -15,3 +15,15 @@ export enum LOGIN_PROVIDER {
   'FACEBOOK' = 'facebook',
   'PHONE' = 'phone',
 }
+
+export enum PLACE_OWNER_TYPE {
+  'Agent' = 'Agent',
+  'Private Owner' = 'Private Owner',
+  'Company Agent' = 'Company Agent',
+}
+
+export enum PLACE_TYPE {
+  'Dorm' = 'Dorm',
+  'Rent' = 'Rent',
+  'Sell' = 'Sell',
+}

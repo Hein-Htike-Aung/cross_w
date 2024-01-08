@@ -14,6 +14,7 @@ import AuthRouter from './modules/auth/routes/auth.route';
 import UserRouter from './modules/user/routes/user.route';
 import TownshipRouter from './modules/township/routes/township.route';
 import VersionRouter from './modules/version/routes/version.route';
+import PlaceRouter from './modules/place/routes/place.router';
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use('/api', AuthRouter);
 app.use('/api', UserRouter);
 app.use('/api', TownshipRouter);
 app.use('/api', VersionRouter);
+app.use('/api', PlaceRouter);
 
 fileUploadRoutes(app);
 
