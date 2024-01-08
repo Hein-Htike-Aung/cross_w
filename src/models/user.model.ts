@@ -148,7 +148,7 @@ User.init(
       allowNull: true,
     },
     provider: {
-      type: DataTypes.ENUM('GOOGLE', 'APPLE', 'FACEBOOK', 'PHONE'),
+      type: DataTypes.ENUM('google', 'apple', 'facebook', 'phone'),
       allowNull: true,
     },
     country: {

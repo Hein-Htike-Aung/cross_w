@@ -10,8 +10,8 @@ export enum CATEGORY {
 }
 
 export enum LOGIN_PROVIDER {
-  'GOOGLE' = 'GOOGLE',
-  'APPLE' = 'APPLE',
-  'FACEBOOK' = 'FACEBOOK',
-  'PHONE' = 'PHONE',
+  'GOOGLE' = 'google',
+  'APPLE' = 'apple',
+  'FACEBOOK' = 'facebook',
+  'PHONE' = 'phone',
 }
