@@ -48,12 +48,12 @@ export default class AuthController {
 
   static loginWithProvider = async (req: Request, res: Response) => {
     try {
-      const { provider_id, provider } = req.body;
+      const { id, provider } = req.body;
 
       const existingUser = await User.findOne({
         where: {
           provider,
-          provider_id,
+          id,
         },
       });
 
@@ -68,13 +68,17 @@ export default class AuthController {
         });
       }
 
-      const hashedPassword = await AuthService.encryptPassword(provider_id);
+      const hashedPassword = await AuthService.encryptPassword(id);
 
-      const newUser = await User.create({
+      const payload = {
         ...req.body,
-        provider_id,
+        provider_id: id,
         password: hashedPassword,
-      });
+      };
+
+      omit(payload, 'id');
+
+      const newUser = await User.create(payload);
 
       const { access_token, refresh_token } =
         AuthService.generateAuthToken<User>(newUser, 'user');
