@@ -6,10 +6,12 @@ import errorResponse from '../../../utils/errorResponse';
 import { AppMessage } from '../../../constants/app_message';
 import AuthService from '../../auth/services/auth.service';
 import successResponse from '../../../utils/successResponse';
-import { Sequelize } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import { sequelize } from '../../../models';
 import { LOGIN_PROVIDER } from '../../../types';
 import isDuplicatedRecord from '../../../utils/isDuplicateRecord';
+import Place from '../../../models/place.model';
+import Notification from '../../../models/notification.model';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -34,7 +36,7 @@ export default class UserController {
       });
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(existingUser, 'user');
+        AuthService.generateAuthToken<User>(user.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -42,6 +44,7 @@ export default class UserController {
         ...omit(user.dataValues, 'password'),
       });
     } catch (error) {
+      console.error({ error });
       handleError(req, res, error);
     }
   };
@@ -98,32 +101,38 @@ export default class UserController {
         },
       );
 
-      // const targetLatitude = 37.7749; // Example latitude
-      // const targetLongitude = -122.4194; // Example longitude
-      // const distanceInMiles = 1;
-
-      // const usersWithinDistance = await User.findAll({
-      //   attributes: [
-      //     'id',
-      //     'username',
-      //     [
-      //       sequelize.literal(
-      //         `6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))`,
-      //       ),
-      //       'distance',
-      //     ],
-      //   ],
-      //   where: sequelize.where(
-      //     sequelize.literal(
-      //       `6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))`,
-      //     ),
-      //     '<=',
-      //     distanceInMiles,
-      //   ),
-      //   order: sequelize.literal('distance'), // Optional: Order by distance
-      // });
-
       return successResponse(req, res, AppMessage.updated);
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static deleteUser = async (req: Request, res: Response) => {
+    try {
+      const { user_id } = req.params;
+
+      await Place.destroy({
+        where: {
+          user_id: user_id,
+        },
+      });
+
+      await Notification.destroy({
+        where: {
+          [Op.or]: {
+            from_user_id: user_id,
+            to_user_id: user_id,
+          },
+        },
+      });
+
+      await User.destroy({
+        where: {
+          id: user_id,
+        },
+      });
+
+      return successResponse(req, res, AppMessage.deleted);
     } catch (error) {
       handleError(req, res, error);
     }

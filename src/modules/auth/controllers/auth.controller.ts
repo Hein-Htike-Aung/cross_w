@@ -34,7 +34,7 @@ export default class AuthController {
       }
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(user, 'user');
+        AuthService.generateAuthToken<User>(user.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -59,7 +59,7 @@ export default class AuthController {
 
       if (existingUser) {
         const { access_token, refresh_token } =
-          AuthService.generateAuthToken<User>(existingUser, 'user');
+          AuthService.generateAuthToken<User>(existingUser.dataValues, 'user');
 
         return successResponse(req, res, null, {
           access_token,
@@ -81,7 +81,7 @@ export default class AuthController {
       const newUser = await User.create(payload);
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(newUser, 'user');
+        AuthService.generateAuthToken<User>(newUser.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -102,7 +102,7 @@ export default class AuthController {
         return errorResponse(req, res, 403, AppMessage.unauthorized);
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(existingUser, 'user');
+        AuthService.generateAuthToken<User>(existingUser.dataValues, 'user');
 
       return successResponse(req, res, null, { access_token, refresh_token });
     } catch (error) {

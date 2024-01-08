@@ -156,11 +156,11 @@ User.init(
     },
     notification_on: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
     system_notification: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
     image_base_url: {
       type: DataTypes.STRING,
