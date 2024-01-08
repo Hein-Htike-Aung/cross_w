@@ -9,6 +9,7 @@ import successResponse from '../../../utils/successResponse';
 import { Sequelize } from 'sequelize';
 import { sequelize } from '../../../models';
 import { LOGIN_PROVIDER } from '../../../types';
+import isDuplicatedRecord from '../../../utils/isDuplicateRecord';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -40,6 +41,39 @@ export default class UserController {
         refresh_token,
         ...omit(user.dataValues, 'password'),
       });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static updateUser = async (req: Request, res: Response) => {
+    try {
+      const { phone } = req.body;
+
+      const { user_id } = req.params;
+
+      const existingUser = await User.findOne({
+        where: {
+          phone,
+        },
+      });
+
+      if (isDuplicatedRecord(existingUser, user_id)) {
+        return errorResponse(req, res, 403, AppMessage.alreadyExists);
+      }
+
+      await User.update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id: user_id,
+          },
+        },
+      );
+
+      return successResponse(req, res, AppMessage.updated);
     } catch (error) {
       handleError(req, res, error);
     }
