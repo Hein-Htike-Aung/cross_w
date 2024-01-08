@@ -5,6 +5,8 @@ import errorResponse from '../../../utils/errorResponse';
 import { AppMessage } from '../../../constants/app_message';
 import AuthService from '../../auth/services/auth.service';
 import successResponse from '../../../utils/successResponse';
+import { Sequelize } from 'sequelize';
+import { sequelize } from '../../../models';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -51,6 +53,31 @@ export default class UserController {
           },
         },
       );
+
+      // const targetLatitude = 37.7749; // Example latitude
+      // const targetLongitude = -122.4194; // Example longitude
+      // const distanceInMiles = 1;
+
+      // const usersWithinDistance = await User.findAll({
+      //   attributes: [
+      //     'id',
+      //     'username',
+      //     [
+      //       sequelize.literal(
+      //         `6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))`,
+      //       ),
+      //       'distance',
+      //     ],
+      //   ],
+      //   where: sequelize.where(
+      //     sequelize.literal(
+      //       `6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))`,
+      //     ),
+      //     '<=',
+      //     distanceInMiles,
+      //   ),
+      //   order: sequelize.literal('distance'), // Optional: Order by distance
+      // });
 
       return successResponse(req, res, AppMessage.updated);
     } catch (error) {

@@ -39,7 +39,7 @@ export default class AuthService {
       process.env.ACCESS_TOKEN_SECRET || 'Secret',
       {
         algorithm: process.env.TOKEN_ALGORITHM as Algorithm,
-        expiresIn: process.env.TOKEN_EXPIRES_IN as string,
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN as string,
       },
     );
 

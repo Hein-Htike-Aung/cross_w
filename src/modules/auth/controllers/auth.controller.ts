@@ -46,12 +46,16 @@ export default class AuthController {
     }
   };
 
-  static generateToken = (req: Request, res: Response) => {
+  static generateToken = async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
 
+      const existingUser = await User.findByPk(user.id);
+      if (!existingUser)
+        return errorResponse(req, res, 403, AppMessage.unauthorized);
+
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(user, 'user');
+        AuthService.generateAuthToken<User>(existingUser, 'user');
 
       return successResponse(req, res, null, { access_token, refresh_token });
     } catch (error) {
