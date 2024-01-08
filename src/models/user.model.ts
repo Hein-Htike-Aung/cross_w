@@ -71,7 +71,6 @@ User.init(
     phone: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
     },
     home_no: {
       type: DataTypes.STRING,

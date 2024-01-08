@@ -53,7 +53,7 @@ export default class AuthController {
       const existingUser = await User.findOne({
         where: {
           provider,
-          id,
+          provider_id: id,
         },
       });
 
@@ -70,13 +70,13 @@ export default class AuthController {
 
       const hashedPassword = await AuthService.encryptPassword(id);
 
-      const payload = {
+      let payload = {
         ...req.body,
         provider_id: id,
         password: hashedPassword,
       };
 
-      omit(payload, 'id');
+      payload = omit(payload, 'id');
 
       const newUser = await User.create(payload);
 
