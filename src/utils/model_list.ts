@@ -6,6 +6,7 @@ import Place from '../models/place.model';
 import Region from '../models/region.model';
 import Township from '../models/township.model';
 import User from '../models/user.model';
+import UserFavoritePlace from '../models/user_favorite_place.model';
 import UserPlace from '../models/user_place.model';
 
 export const model_list = [
@@ -18,4 +19,5 @@ export const model_list = [
   Place,
   User,
   UserPlace,
+  UserFavoritePlace,
 ];

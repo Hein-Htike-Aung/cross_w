@@ -15,6 +15,7 @@ import UserRouter from './modules/user/routes/user.route';
 import TownshipRouter from './modules/township/routes/township.route';
 import VersionRouter from './modules/version/routes/version.route';
 import PlaceRouter from './modules/place/routes/place.router';
+import UserFavoritePlaceRouter from './modules/place/routes/user_favorite_place.route';
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use('/api', UserRouter);
 app.use('/api', TownshipRouter);
 app.use('/api', VersionRouter);
 app.use('/api', PlaceRouter);
+app.use('/api', UserFavoritePlaceRouter);
 
 fileUploadRoutes(app);
 

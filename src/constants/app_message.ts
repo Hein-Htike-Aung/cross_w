@@ -59,4 +59,14 @@ export const AppMessage = {
     my: 'ဤလုပ်ဆောင်ချက်အား လုပ်ဆောင်ခွင့်မရှိပါ။',
     cn: '无法访问 请稍后重试',
   },
+  addToFavorite: {
+    en: 'Add to favorite',
+    my: '',
+    cn: '',
+  },
+  removeToFavorite: {
+    en: 'Remove from favorite',
+    my: '',
+    cn: '',
+  },
 };

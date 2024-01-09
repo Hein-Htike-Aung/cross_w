@@ -3,6 +3,7 @@ import handleError from '../../../utils/handleError';
 import UserPlace from '../../../models/user_place.model';
 import successResponse from '../../../utils/successResponse';
 import { AppMessage } from '../../../constants/app_message';
+import UserFavoritePlace from '../../../models/user_favorite_place.model';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -57,6 +58,19 @@ export default class PlaceController {
           user_id: user.id,
         },
       });
+
+      await Promise.all(
+        user_places.map(async (up: any) => {
+          const userFavoritePlace = await UserFavoritePlace.findOne({
+            where: {
+              user_id: user.id,
+              user_place_id: up.id,
+            },
+          });
+
+          up.dataValues['is_favorite'] = !!userFavoritePlace;
+        }),
+      );
 
       return successResponse(req, res, null, { user_places });
     } catch (error) {
