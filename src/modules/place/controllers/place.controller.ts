@@ -4,6 +4,8 @@ import UserPlace from '../../../models/user_place.model';
 import successResponse from '../../../utils/successResponse';
 import { AppMessage } from '../../../constants/app_message';
 import UserFavoritePlace from '../../../models/user_favorite_place.model';
+import NayarUser from '../../../models/user.model';
+import Demo from '../../../models/demon.model';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -54,6 +56,12 @@ export default class PlaceController {
 
       const user_places = await UserPlace.findAll({
         order: [['id', 'desc']],
+        include: [
+          {
+            model: NayarUser,
+            as: 'nayar_user',
+          },
+        ],
         where: {
           user_id: user.id,
         },
@@ -89,6 +97,18 @@ export default class PlaceController {
       });
 
       return successResponse(req, res, AppMessage.deleted);
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static placeData = async (req: Request, res: Response) => {
+    try {
+      await Demo.create({
+        data: req.body,
+      });
+
+      return successResponse(req, res, AppMessage.created);
     } catch (error) {
       handleError(req, res, error);
     }

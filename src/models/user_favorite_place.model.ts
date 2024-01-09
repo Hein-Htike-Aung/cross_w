@@ -7,7 +7,7 @@ import {
 } from 'sequelize';
 import { sequelize } from '.';
 import UserPlace from './user_place.model';
-import User from './user.model';
+import NayarUser from './user.model';
 
 export default class UserFavoritePlace extends Model<
   InferAttributes<UserFavoritePlace>,
@@ -33,7 +33,7 @@ UserFavoritePlace.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'nayar_user',
         key: 'id',
       },
     },
@@ -78,12 +78,12 @@ UserPlace.hasMany(UserFavoritePlace, {
 });
 
 /*  */
-UserFavoritePlace.belongsTo(User, {
+UserFavoritePlace.belongsTo(NayarUser, {
   foreignKey: 'user_id',
-  as: 'user',
+  as: 'nayar_user',
 });
 
-User.hasMany(UserFavoritePlace, {
+NayarUser.hasMany(UserFavoritePlace, {
   foreignKey: 'user_id',
   as: 'user_favorite_places',
 });

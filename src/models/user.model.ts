@@ -5,13 +5,13 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
-import { LOGIN_PROVIDER, USER_TYPE } from '../types';
+import { LOGIN_PROVIDER, USER_LEVEL, USER_TYPE } from '../types';
 import { sequelize } from '.';
 import Township from './township.model';
 
-export default class User extends Model<
-  InferAttributes<User>,
-  InferCreationAttributes<User>
+export default class NayarUser extends Model<
+  InferAttributes<NayarUser>,
+  InferCreationAttributes<NayarUser>
 > {
   declare id: CreationOptional<number>;
 
@@ -26,30 +26,23 @@ export default class User extends Model<
   declare image_url: CreationOptional<string>;
   declare is_disable: boolean;
   declare type: USER_TYPE;
+  declare user_level: USER_LEVEL;
   declare long: CreationOptional<number>;
   declare lat: CreationOptional<number>;
-  declare favorite: CreationOptional<JSON>;
-  declare remember_token: CreationOptional<string>;
   declare device_token: CreationOptional<string>;
-  declare role: CreationOptional<number>;
   declare address: CreationOptional<string>;
   declare email: CreationOptional<string>;
-  declare facebook_id: CreationOptional<string>;
-  declare facebook_token: CreationOptional<string>;
   declare is_update: boolean;
   declare provider_id: CreationOptional<string>;
   declare provider: CreationOptional<LOGIN_PROVIDER>;
-  declare country: string;
   declare notification_on: boolean;
   declare system_notification: boolean;
-  declare image_base_url: string;
-  declare email_verified_at: CreationOptional<Date>;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
 }
 
-User.init(
+NayarUser.init(
   {
     id: {
       primaryKey: true,
@@ -96,7 +89,16 @@ User.init(
       defaultValue: false,
     },
     type: {
-      type: DataTypes.ENUM('COMPANY_AGENT', 'USER', 'AGENT'),
+      type: DataTypes.ENUM(
+        'ADMIN',
+        'SUPER ADMIN',
+        'COMPANY_AGENT',
+        'USER',
+        'AGENT',
+      ),
+    },
+    user_level: {
+      type: DataTypes.ENUM('LEVEL_1', 'LEVEL_2'),
     },
     long: {
       type: DataTypes.DECIMAL,
@@ -106,20 +108,8 @@ User.init(
       type: DataTypes.DECIMAL,
       allowNull: true,
     },
-    favorite: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
-    remember_token: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     device_token: {
       type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    role: {
-      type: DataTypes.INTEGER,
       allowNull: true,
     },
     address: {
@@ -128,14 +118,6 @@ User.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    facebook_id: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    facebook_token: {
-      type: DataTypes.TEXT,
       allowNull: true,
     },
     is_update: {
@@ -150,10 +132,6 @@ User.init(
       type: DataTypes.ENUM('google', 'apple', 'facebook', 'phone'),
       allowNull: true,
     },
-    country: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     notification_on: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -161,14 +139,6 @@ User.init(
     system_notification: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-    },
-    image_base_url: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    email_verified_at: {
-      type: DataTypes.DATE(6),
-      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE(6),
@@ -184,19 +154,19 @@ User.init(
   {
     sequelize,
     underscored: true,
-    modelName: 'User',
-    tableName: 'user',
+    modelName: 'NayarUser',
+    tableName: 'nayar_user',
     timestamps: true,
     paranoid: false,
   },
 );
 
-User.belongsTo(Township, {
+NayarUser.belongsTo(Township, {
   foreignKey: 'township_id',
   as: 'township',
 });
 
-Township.hasMany(User, {
+Township.hasMany(NayarUser, {
   foreignKey: 'township_id',
   as: 'users',
 });

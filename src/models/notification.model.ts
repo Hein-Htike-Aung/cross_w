@@ -7,7 +7,7 @@ import {
 } from 'sequelize';
 import { CATEGORY } from '../types';
 import { sequelize } from '.';
-import User from './user.model';
+import NayarUser from './user.model';
 import Place from './place.model';
 
 export default class Notification extends Model<
@@ -40,7 +40,7 @@ Notification.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'nayar_user',
         key: 'id',
       },
     },
@@ -48,7 +48,7 @@ Notification.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'nayar_user',
         key: 'id',
       },
     },
@@ -97,23 +97,23 @@ Notification.init(
 );
 
 /*  */
-Notification.belongsTo(User, {
+Notification.belongsTo(NayarUser, {
   foreignKey: 'from_user_id',
   as: 'from_user',
 });
 
-User.hasMany(Notification, {
+NayarUser.hasMany(Notification, {
   foreignKey: 'from_user_id',
   as: 'from_user_notifications',
 });
 
 /*  */
-Notification.belongsTo(User, {
+Notification.belongsTo(NayarUser, {
   foreignKey: 'to_user_id',
   as: 'to_user',
 });
 
-User.hasMany(Notification, {
+NayarUser.hasMany(Notification, {
   foreignKey: 'to_user_id',
   as: 'to_user_notifications',
 });

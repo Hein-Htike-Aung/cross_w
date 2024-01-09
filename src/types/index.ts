@@ -1,7 +1,14 @@
 export enum USER_TYPE {
-  'COMPANY_AGENT' = 'COMPANY_AGENT',
+  'ADMIN' = 'ADMIN',
+  'SUPER ADMIN' = 'SUPER ADMIN',
   'USER' = 'USER',
   'AGENT' = 'AGENT',
+  'COMPANY_AGENT' = 'COMPANY_AGENT',
+}
+
+export enum USER_LEVEL {
+  'LEVEL_1' = 'LEVEL_1',
+  'LEVEL_2' = 'LEVEL_2',
 }
 
 export enum CATEGORY {
@@ -23,7 +30,7 @@ export enum PLACE_OWNER_TYPE {
 }
 
 export enum PLACE_TYPE {
-  'Dorm' = 'Dorm',
+  'Hostal' = 'Hostal',
   'Rent' = 'Rent',
   'Sell' = 'Sell',
 }

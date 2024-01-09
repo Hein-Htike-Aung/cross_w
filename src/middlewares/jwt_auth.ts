@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { AppMessage } from '../constants/app_message';
-import User from '../models/user.model';
+import NayarUser from '../models/user.model';
 import errorResponse from '../utils/errorResponse';
 
 const jwt_auth = (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +19,7 @@ const jwt_auth = (req: Request, res: Response, next: NextFunction) => {
 
         if (targetObj.type === 'user') {
           if (targetObj.id) {
-            const user = await User.findByPk(targetObj.id);
+            const user = await NayarUser.findByPk(targetObj.id);
             if (!user)
               return errorResponse(req, res, 403, AppMessage.unauthorized);
 

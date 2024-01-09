@@ -1,24 +1,26 @@
-import { omit } from 'lodash';
 import { Request, Response } from 'express';
-import handleError from '../../../utils/handleError';
-import User from '../../../models/user.model';
-import errorResponse from '../../../utils/errorResponse';
-import { AppMessage } from '../../../constants/app_message';
-import AuthService from '../../auth/services/auth.service';
-import successResponse from '../../../utils/successResponse';
+import { omit } from 'lodash';
+// import queryString from 'query-string';
 import { Op, Sequelize } from 'sequelize';
-import { sequelize } from '../../../models';
-import { LOGIN_PROVIDER } from '../../../types';
-import isDuplicatedRecord from '../../../utils/isDuplicateRecord';
-import Place from '../../../models/place.model';
+import { AppMessage } from '../../../constants/app_message';
 import Notification from '../../../models/notification.model';
+import Place from '../../../models/place.model';
+import Township from '../../../models/township.model';
+import NayarUser from '../../../models/user.model';
+import { LOGIN_PROVIDER } from '../../../types';
+import errorResponse from '../../../utils/errorResponse';
+import handleError from '../../../utils/handleError';
+import isDuplicatedRecord from '../../../utils/isDuplicateRecord';
+import likeSearch from '../../../utils/likeSearch';
+import successResponse from '../../../utils/successResponse';
+import AuthService from '../../auth/services/auth.service';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
     try {
       const { phone, password } = req.body;
 
-      const existingUser = await User.findOne({
+      const existingUser = await NayarUser.findOne({
         where: {
           phone,
         },
@@ -29,14 +31,14 @@ export default class UserController {
 
       const hashedPassword = await AuthService.encryptPassword(password);
 
-      const user = await User.create({
+      const user = await NayarUser.create({
         ...req.body,
         password: hashedPassword,
         provider: LOGIN_PROVIDER.PHONE,
       });
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(user.dataValues, 'user');
+        AuthService.generateAuthToken<NayarUser>(user.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -55,7 +57,7 @@ export default class UserController {
 
       const { user_id } = req.params;
 
-      const existingUser = await User.findOne({
+      const existingUser = await NayarUser.findOne({
         where: {
           phone,
         },
@@ -65,7 +67,7 @@ export default class UserController {
         return errorResponse(req, res, 403, AppMessage.alreadyExists);
       }
 
-      await User.update(
+      await NayarUser.update(
         {
           ...req.body,
         },
@@ -90,7 +92,7 @@ export default class UserController {
 
       console.log({ user_id, device_token });
 
-      await User.update(
+      await NayarUser.update(
         {
           device_token,
         },
@@ -126,13 +128,63 @@ export default class UserController {
         },
       });
 
-      await User.destroy({
+      await NayarUser.destroy({
         where: {
           id: user_id,
         },
       });
 
       return successResponse(req, res, AppMessage.deleted);
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static userById = async (req: Request, res: Response) => {
+    try {
+      const { user_id } = req.params;
+
+      const user = await NayarUser.findByPk(user_id, {
+        include: [
+          {
+            model: Township,
+            as: 'township',
+          },
+        ],
+      });
+
+      return successResponse(req, res, null, {
+        ...omit(user?.dataValues, 'password'),
+      });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static userList = async (req: Request, res: Response) => {
+    try {
+      const { search } = req.query;
+
+      const { rows, count } = await NayarUser.findAndCountAll({
+        where: {
+          [Op.or]: [
+            Sequelize.literal(`type::text ILIKE '%${search}%'`),
+            { name: { [Op.iLike]: likeSearch(search as string) } },
+            { phone: { [Op.iLike]: likeSearch(search as string) } },
+            { email: { [Op.iLike]: likeSearch(search as string) } },
+            { address: { [Op.iLike]: likeSearch(search as string) } },
+          ],
+        },
+        order: [['id', 'desc']],
+        include: [
+          {
+            model: Township,
+            as: 'township',
+          },
+        ],
+      });
+
+      return successResponse(req, res, null, { users: rows, count });
     } catch (error) {
       handleError(req, res, error);
     }

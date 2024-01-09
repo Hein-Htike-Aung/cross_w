@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import handleError from '../../../utils/handleError';
 import successResponse from '../../../utils/successResponse';
-import User from '../../../models/user.model';
+import NayarUser from '../../../models/user.model';
 import errorResponse from '../../../utils/errorResponse';
 import {
   AppMessage,
@@ -15,7 +15,7 @@ export default class AuthController {
     try {
       const { phone, password } = req.body;
 
-      const user = await User.findOne({
+      const user = await NayarUser.findOne({
         where: {
           phone,
         },
@@ -24,7 +24,7 @@ export default class AuthController {
       if (!user)
         return errorResponse(req, res, 403, AppMessage.invalidCredential);
 
-      const validatedUser = await AuthService.validateUser<User>(
+      const validatedUser = await AuthService.validateUser<NayarUser>(
         user,
         password,
       );
@@ -34,7 +34,7 @@ export default class AuthController {
       }
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(user.dataValues, 'user');
+        AuthService.generateAuthToken<NayarUser>(user.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -50,7 +50,7 @@ export default class AuthController {
     try {
       const { id, provider } = req.body;
 
-      const existingUser = await User.findOne({
+      const existingUser = await NayarUser.findOne({
         where: {
           provider,
           provider_id: id,
@@ -59,7 +59,7 @@ export default class AuthController {
 
       if (existingUser) {
         const { access_token, refresh_token } =
-          AuthService.generateAuthToken<User>(existingUser.dataValues, 'user');
+          AuthService.generateAuthToken<NayarUser>(existingUser.dataValues, 'user');
 
         return successResponse(req, res, null, {
           access_token,
@@ -78,10 +78,10 @@ export default class AuthController {
 
       payload = omit(payload, 'id');
 
-      const newUser = await User.create(payload);
+      const newUser = await NayarUser.create(payload);
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(newUser.dataValues, 'user');
+        AuthService.generateAuthToken<NayarUser>(newUser.dataValues, 'user');
 
       return successResponse(req, res, null, {
         access_token,
@@ -97,12 +97,12 @@ export default class AuthController {
     try {
       const user = (req as any).user;
 
-      const existingUser = await User.findByPk(user.id);
+      const existingUser = await NayarUser.findByPk(user.id);
       if (!existingUser)
         return errorResponse(req, res, 403, AppMessage.unauthorized);
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<User>(existingUser.dataValues, 'user');
+        AuthService.generateAuthToken<NayarUser>(existingUser.dataValues, 'user');
 
       return successResponse(req, res, null, { access_token, refresh_token });
     } catch (error) {
@@ -116,12 +116,12 @@ export default class AuthController {
 
       const { current_password, new_password } = req.body;
 
-      const user = await User.findByPk(user_id);
+      const user = await NayarUser.findByPk(user_id);
 
       if (!user)
         return errorResponse(req, res, 404, AppMessageModelNotFound('User'));
 
-      const validatedUser = await AuthService.validateUser<User>(
+      const validatedUser = await AuthService.validateUser<NayarUser>(
         user,
         current_password,
       );
@@ -131,7 +131,7 @@ export default class AuthController {
 
       const hashedPassword = await AuthService.encryptPassword(new_password);
 
-      await User.update(
+      await NayarUser.update(
         {
           password: hashedPassword,
         },

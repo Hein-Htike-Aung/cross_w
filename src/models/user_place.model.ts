@@ -7,6 +7,7 @@ import {
 } from 'sequelize';
 import { PLACE_OWNER_TYPE, PLACE_TYPE } from '../types';
 import { sequelize } from '.';
+import NayarUser from './user.model';
 
 export default class UserPlace extends Model<
   InferAttributes<UserPlace>,
@@ -16,19 +17,32 @@ export default class UserPlace extends Model<
 
   declare user_id: number;
 
-  declare price: number;
   declare type: PLACE_TYPE;
   declare owner_type: PLACE_OWNER_TYPE;
-  declare contact: string;
+  declare building_info: string; // flat, villa, condo, hostel
 
+  declare price: number;
+  declare has_deposit: boolean;
+  declare deposit_amount: number;
+  declare agent_fee: string;
+
+  declare contact: string;
+  declare contact_channel: JSON;
+  declare payment: JSON;
   declare home_no: string;
   declare street: string;
   declare township: string;
   declare ward: string;
+  declare division: string;
+  declare floor: number;
+  declare house_holding_size: number;
+  declare sqft: string;
 
   declare lat: number;
   declare long: number;
 
+  declare parking: number;
+  declare bus_stop: string;
   declare near_bus_stop: string;
   declare near_market: string;
   declare near_hospital: string;
@@ -37,16 +51,9 @@ export default class UserPlace extends Model<
   declare bath_toilet: string;
   declare bedroom: string;
 
-  declare sqft: string;
-  declare building_info: string;
-
   declare description: string;
   declare contract_term: string;
   declare payment_term: string;
-  declare agent_fee: string;
-
-  declare contact_channel: JSON;
-  declare payment: JSON;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
@@ -63,25 +70,21 @@ UserPlace.init(
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'nayar_user',
         key: 'id',
       },
     },
     price: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     type: {
-      type: DataTypes.ENUM('Dorm', 'Rent', 'Sell'),
-      allowNull: false,
+      type: DataTypes.ENUM('Hostel', 'Rent', 'Sell'),
     },
     owner_type: {
       type: DataTypes.ENUM('Agent', 'Private Owner', 'Company Agent'),
-      allowNull: false,
     },
     contact: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     home_no: {
       type: DataTypes.STRING,
@@ -143,6 +146,27 @@ UserPlace.init(
     payment: {
       type: DataTypes.JSONB,
     },
+    division: {
+      type: DataTypes.STRING,
+    },
+    parking: {
+      type: DataTypes.INTEGER,
+    },
+    house_holding_size: {
+      type: DataTypes.INTEGER,
+    },
+    floor: {
+      type: DataTypes.INTEGER,
+    },
+    has_deposit: {
+      type: DataTypes.BOOLEAN,
+    },
+    deposit_amount: {
+      type: DataTypes.INTEGER,
+    },
+    bus_stop: {
+      type: DataTypes.STRING,
+    },
     created_at: {
       type: DataTypes.DATE(6),
       defaultValue: DataTypes.NOW,
@@ -161,3 +185,13 @@ UserPlace.init(
     paranoid: false,
   },
 );
+
+UserPlace.belongsTo(NayarUser, {
+  foreignKey: 'user_id',
+  as: 'nayar_user',
+});
+
+NayarUser.hasMany(UserPlace, {
+  foreignKey: 'user_id',
+  as: 'user_places',
+});

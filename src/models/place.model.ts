@@ -6,7 +6,7 @@ import {
   Model,
 } from 'sequelize';
 import { sequelize } from '.';
-import User from './user.model';
+import NayarUser from './user.model';
 
 export default class Place extends Model<
   InferAttributes<Place>,
@@ -42,7 +42,7 @@ Place.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'nayar_user',
         key: 'id',
       },
     },
@@ -103,12 +103,12 @@ Place.init(
   },
 );
 
-Place.belongsTo(User, {
+Place.belongsTo(NayarUser, {
   foreignKey: 'user_id',
-  as: 'user',
+  as: 'nayar_user',
 });
 
-User.hasMany(Place, {
+NayarUser.hasMany(Place, {
   foreignKey: 'user_id',
   as: 'places',
 });
