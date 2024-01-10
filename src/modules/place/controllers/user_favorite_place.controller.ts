@@ -4,11 +4,14 @@ import UserFavoritePlace from '../../../models/user_favorite_place.model';
 import successResponse from '../../../utils/successResponse';
 import { AppMesh } from 'aws-sdk';
 import { AppMessage } from '../../../constants/app_message';
+import UserService from '../../user/services/user.service';
 
 export default class UserFavoritePlaceController {
   static toggleFavorite = async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
+
+      await UserService.findUserById(user.id);
 
       const { user_place_id } = req.params;
 

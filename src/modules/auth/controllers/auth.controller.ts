@@ -9,6 +9,7 @@ import {
 } from '../../../constants/app_message';
 import AuthService from '../services/auth.service';
 import { get, omit } from 'lodash';
+import UserService from '../../user/services/user.service';
 
 export default class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -59,7 +60,10 @@ export default class AuthController {
 
       if (existingUser) {
         const { access_token, refresh_token } =
-          AuthService.generateAuthToken<NayarUser>(existingUser.dataValues, 'user');
+          AuthService.generateAuthToken<NayarUser>(
+            existingUser.dataValues,
+            'user',
+          );
 
         return successResponse(req, res, null, {
           access_token,
@@ -97,12 +101,17 @@ export default class AuthController {
     try {
       const user = (req as any).user;
 
+      await UserService.findUserById(user.id);
+
       const existingUser = await NayarUser.findByPk(user.id);
       if (!existingUser)
         return errorResponse(req, res, 403, AppMessage.unauthorized);
 
       const { access_token, refresh_token } =
-        AuthService.generateAuthToken<NayarUser>(existingUser.dataValues, 'user');
+        AuthService.generateAuthToken<NayarUser>(
+          existingUser.dataValues,
+          'user',
+        );
 
       return successResponse(req, res, null, { access_token, refresh_token });
     } catch (error) {

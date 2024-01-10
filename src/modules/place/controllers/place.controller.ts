@@ -10,11 +10,15 @@ import UserFavoritePlace from '../../../models/user_favorite_place.model';
 import NayarUser from '../../../models/user.model';
 import Demo from '../../../models/demon.model';
 import errorResponse from '../../../utils/errorResponse';
+import UserService from '../../user/services/user.service';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
+
+      await UserService.findUserById(user.id);
+
       // const {
       //   price,
       //   owner_type,
@@ -58,6 +62,8 @@ export default class PlaceController {
     try {
       const user = (req as any).user;
 
+      await UserService.findUserById(user.id);
+
       const user_places = await UserPlace.findAll({
         order: [['id', 'desc']],
         include: [
@@ -93,6 +99,8 @@ export default class PlaceController {
   static userPlaceById = async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
+
+      await UserService.findUserById(user.id);
 
       const { user_place_id } = req.params;
 
