@@ -1,5 +1,6 @@
 import Address from '../models/address.model';
 import Country from '../models/country.model';
+import DefaultImage from '../models/default_image.model';
 import Demo from '../models/demon.model';
 import Notification from '../models/notification.model';
 import ObtainDetails from '../models/obtain_detail.model';
@@ -22,4 +23,5 @@ export const model_list = [
   UserPlace,
   UserFavoritePlace,
   Demo,
+  DefaultImage,
 ];

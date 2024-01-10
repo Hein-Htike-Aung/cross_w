@@ -2,10 +2,14 @@ import { Request, Response } from 'express';
 import handleError from '../../../utils/handleError';
 import UserPlace from '../../../models/user_place.model';
 import successResponse from '../../../utils/successResponse';
-import { AppMessage } from '../../../constants/app_message';
+import {
+  AppMessage,
+  AppMessageModelNotFound,
+} from '../../../constants/app_message';
 import UserFavoritePlace from '../../../models/user_favorite_place.model';
 import NayarUser from '../../../models/user.model';
 import Demo from '../../../models/demon.model';
+import errorResponse from '../../../utils/errorResponse';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -81,6 +85,48 @@ export default class PlaceController {
       );
 
       return successResponse(req, res, null, { user_places });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static userPlaceById = async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+
+      const { user_place_id } = req.params;
+
+      const user_place: any = await UserPlace.findOne({
+        order: [['id', 'desc']],
+        include: [
+          {
+            model: NayarUser,
+            as: 'nayar_user',
+          },
+        ],
+        where: {
+          id: user_place_id,
+        },
+      });
+
+      if (!user_place)
+        return errorResponse(
+          req,
+          res,
+          404,
+          AppMessageModelNotFound('User place'),
+        );
+
+      const userFavoritePlace = await UserFavoritePlace.findOne({
+        where: {
+          user_id: user.id,
+          user_place_id: user_place.id,
+        },
+      });
+
+      user_place.dataValues['is_favorite'] = !!userFavoritePlace;
+
+      return successResponse(req, res, null, { user_place });
     } catch (error) {
       handleError(req, res, error);
     }

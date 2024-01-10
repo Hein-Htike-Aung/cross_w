@@ -21,12 +21,12 @@ const app = express();
 
 model_list;
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
-});
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   limit: 100,
+// });
 
-app.use(limiter);
+// app.use(limiter);
 
 app.use(
   cors({
