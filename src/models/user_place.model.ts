@@ -7,7 +7,7 @@ import {
 } from 'sequelize';
 import { PLACE_OWNER_TYPE, PLACE_TYPE } from '../types';
 import { sequelize } from '.';
-import NayarUser from './user.model';
+import NayarUser from './nayar_user.model';
 
 export default class UserPlace extends Model<
   InferAttributes<UserPlace>,

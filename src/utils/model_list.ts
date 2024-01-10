@@ -7,7 +7,7 @@ import ObtainDetails from '../models/obtain_detail.model';
 import Place from '../models/place.model';
 import Region from '../models/region.model';
 import Township from '../models/township.model';
-import NayarUser from '../models/user.model';
+import NayarUser from '../models/nayar_user.model';
 import UserFavoritePlace from '../models/user_favorite_place.model';
 import UserPlace from '../models/user_place.model';
 

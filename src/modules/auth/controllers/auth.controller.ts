@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import handleError from '../../../utils/handleError';
 import successResponse from '../../../utils/successResponse';
-import NayarUser from '../../../models/user.model';
+import NayarUser from '../../../models/nayar_user.model';
 import errorResponse from '../../../utils/errorResponse';
 import {
   AppMessage,

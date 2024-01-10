@@ -10,4 +10,10 @@ router.patch(
   UserFavoritePlaceController.toggleFavorite,
 );
 
+router.get(
+  '/v1/favourite_list',
+  [jwt_auth],
+  UserFavoritePlaceController.userFavoritePlace,
+);
+
 export default router;

@@ -6,7 +6,7 @@ import { AppMessage } from '../../../constants/app_message';
 import Notification from '../../../models/notification.model';
 import Place from '../../../models/place.model';
 import Township from '../../../models/township.model';
-import NayarUser from '../../../models/user.model';
+import NayarUser from '../../../models/nayar_user.model';
 import { LOGIN_PROVIDER } from '../../../types';
 import errorResponse from '../../../utils/errorResponse';
 import handleError from '../../../utils/handleError';
@@ -90,8 +90,6 @@ export default class UserController {
       const { user_id } = req.params;
 
       const { device_token } = req.body;
-
-      console.log({ user_id, device_token });
 
       await NayarUser.update(
         {

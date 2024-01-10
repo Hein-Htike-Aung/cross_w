@@ -8,7 +8,6 @@ const errorResponse = (
   message: any,
   errors = {},
 ) => {
-  console.log(message);
   const language = req.headers['language'] as languages;
 
   res.status(statusCode).json({

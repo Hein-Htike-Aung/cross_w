@@ -1,6 +1,6 @@
 import { AppMessageModelNotFound } from '../../../constants/app_message';
 import Township from '../../../models/township.model';
-import NayarUser from '../../../models/user.model';
+import NayarUser from '../../../models/nayar_user.model';
 import AppError from '../../../utils/appError';
 
 export default class UserService {

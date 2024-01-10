@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { AppMessage } from '../constants/app_message';
-import NayarUser from '../models/user.model';
+import NayarUser from '../models/nayar_user.model';
 import errorResponse from '../utils/errorResponse';
 
 const jwt_auth = (req: Request, res: Response, next: NextFunction) => {

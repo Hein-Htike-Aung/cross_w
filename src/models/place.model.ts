@@ -6,7 +6,7 @@ import {
   Model,
 } from 'sequelize';
 import { sequelize } from '.';
-import NayarUser from './user.model';
+import NayarUser from './nayar_user.model';
 
 export default class Place extends Model<
   InferAttributes<Place>,

@@ -7,7 +7,7 @@ import {
 } from 'sequelize';
 import { CATEGORY } from '../types';
 import { sequelize } from '.';
-import NayarUser from './user.model';
+import NayarUser from './nayar_user.model';
 import Place from './place.model';
 
 export default class Notification extends Model<
@@ -22,7 +22,7 @@ export default class Notification extends Model<
 
   declare title: any;
   declare body: any;
-  declare is_read: boolean;
+  declare is_read: CreationOptional<boolean>;
   declare category: CATEGORY;
 
   declare created_at: CreationOptional<Date>;
@@ -56,7 +56,7 @@ Notification.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'place',
+        model: 'user_place',
         key: 'id',
       },
     },

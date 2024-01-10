@@ -7,7 +7,7 @@ import {
   AppMessageModelNotFound,
 } from '../../../constants/app_message';
 import UserFavoritePlace from '../../../models/user_favorite_place.model';
-import NayarUser from '../../../models/user.model';
+import NayarUser from '../../../models/nayar_user.model';
 import Demo from '../../../models/demon.model';
 import errorResponse from '../../../utils/errorResponse';
 import UserService from '../../user/services/user.service';

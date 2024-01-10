@@ -7,6 +7,28 @@ import getPaginationData from '../../../utils/getPagination';
 import { AppMessage } from '../../../constants/app_message';
 
 export default class NotificationController {
+  static allNotification = async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+
+      await UserService.findUserById(user.id);
+      const { offset, limit } = getPaginationData(req.query);
+
+      const { rows, count } = await Notification.findAndCountAll({
+        limit,
+        offset,
+        order: [['id', 'desc']],
+      });
+
+      return successResponse(req, res, null, {
+        notifications: rows,
+        total: count,
+      });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
   static notificationByUser = async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;

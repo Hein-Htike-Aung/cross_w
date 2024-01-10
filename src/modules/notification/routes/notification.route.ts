@@ -10,6 +10,12 @@ router.get(
   NotificationController.notificationByUser,
 );
 
+router.get(
+  '/v1/notifications',
+  [jwt_auth],
+  NotificationController.allNotification,
+);
+
 router.patch(
   '/v1/read_noti',
   [jwt_auth],

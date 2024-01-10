@@ -5,6 +5,9 @@ import successResponse from '../../../utils/successResponse';
 import { AppMesh } from 'aws-sdk';
 import { AppMessage } from '../../../constants/app_message';
 import UserService from '../../user/services/user.service';
+import Place from '../../../models/place.model';
+import UserPlace from '../../../models/user_place.model';
+import NayarUser from '../../../models/nayar_user.model';
 
 export default class UserFavoritePlaceController {
   static toggleFavorite = async (req: Request, res: Response) => {
@@ -39,6 +42,38 @@ export default class UserFavoritePlaceController {
 
         return successResponse(req, res, AppMessage.addToFavorite);
       }
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static userFavoritePlace = async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+
+      const { rows, count } = await UserFavoritePlace.findAndCountAll({
+        order: [['id', 'desc']],
+        where: {
+          user_id: user.id,
+        },
+        include: [
+          {
+            model: UserPlace,
+            as: 'user_place',
+            include: [
+              {
+                model: NayarUser,
+                as: 'nayar_user',
+              },
+            ],
+          },
+        ],
+      });
+
+      return successResponse(req, res, null, {
+        favorite_places: rows,
+        total: count,
+      });
     } catch (error) {
       handleError(req, res, error);
     }
