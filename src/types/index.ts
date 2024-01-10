@@ -30,7 +30,7 @@ export enum PLACE_OWNER_TYPE {
 }
 
 export enum PLACE_TYPE {
-  'Hostal' = 'Hostal',
+  'Hostel' = 'Hostel',
   'Rent' = 'Rent',
   'Sell' = 'Sell',
 }

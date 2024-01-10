@@ -11,6 +11,7 @@ import NayarUser from '../../../models/user.model';
 import Demo from '../../../models/demon.model';
 import errorResponse from '../../../utils/errorResponse';
 import UserService from '../../user/services/user.service';
+import getPaginationData from '../../../utils/getPagination';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -62,9 +63,13 @@ export default class PlaceController {
     try {
       const user = (req as any).user;
 
+      const { offset, limit } = getPaginationData(req.query);
+
       await UserService.findUserById(user.id);
 
-      const user_places = await UserPlace.findAll({
+      const { rows, count } = await UserPlace.findAndCountAll({
+        limit,
+        offset,
         order: [['id', 'desc']],
         include: [
           {
@@ -78,7 +83,7 @@ export default class PlaceController {
       });
 
       await Promise.all(
-        user_places.map(async (up: any) => {
+        rows.map(async (up: any) => {
           const userFavoritePlace = await UserFavoritePlace.findOne({
             where: {
               user_id: user.id,
@@ -90,7 +95,10 @@ export default class PlaceController {
         }),
       );
 
-      return successResponse(req, res, null, { user_places });
+      return successResponse(req, res, null, {
+        user_places: rows,
+        total: count,
+      });
     } catch (error) {
       handleError(req, res, error);
     }

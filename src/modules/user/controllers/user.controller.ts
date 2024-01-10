@@ -14,6 +14,7 @@ import isDuplicatedRecord from '../../../utils/isDuplicateRecord';
 import likeSearch from '../../../utils/likeSearch';
 import successResponse from '../../../utils/successResponse';
 import AuthService from '../../auth/services/auth.service';
+import getPaginationData from '../../../utils/getPagination';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -165,7 +166,11 @@ export default class UserController {
     try {
       const { search } = req.query;
 
+      const { offset, limit } = getPaginationData(req.query);
+
       const { rows, count } = await NayarUser.findAndCountAll({
+        offset,
+        limit,
         where: {
           [Op.or]: [
             Sequelize.literal(`type::text ILIKE '%${search}%'`),
@@ -184,7 +189,7 @@ export default class UserController {
         ],
       });
 
-      return successResponse(req, res, null, { users: rows, count });
+      return successResponse(req, res, null, { users: rows, total: count });
     } catch (error) {
       handleError(req, res, error);
     }

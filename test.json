@@ -1,0 +1,29 @@
+{
+    "lat": 16.845715818908968,
+    "long": 96.27590916404667,
+    "type": 2,
+    "ward": "",
+    "price": [300000],
+    "images": ["No image.", "No image.", ..., "No image."],
+    "street": "",
+    "address": "ဒဂုံဆိပ်ကမ်း ဒဂုံဆိပ်ကမ်း",
+    "contact": ["09988873858", "09422206325"],
+    "home_no": "",
+    "post_id": 709881440724242,
+    "township": 4,
+    "image_url": "Testing url",
+    "town_name": "ဒဂုံဆိပ်ကမ်း",
+    "owner_type": "Agent",
+    "description": "လာပြီနော်\nတတိယထပ်နေရိပ်ခြမ်းရှယ်ပြင်ခန်းလေးရောင်းပေးမယ်ရှင့်\n...\nဝယ်ယူအားပေးတဲ့ ကျေးဇူးရှင် ထမင်းရှင် မိတ်ဆွေအပေါင်းအား ကျေးဇူးအထူးတင်ပါတယ်ရှင် ♥♥♥",
+    "payment_term": "",
+    "building_info": "",
+    "location_type": "near_by",
+    "floor_attribute": "တတိယထပ်",
+    "apartment_attribute": {
+      "aircon": false,
+      "toilet_seat": false,
+      "ceramic_floor": false,
+      "parquet_floor": false
+    }
+  }
+  

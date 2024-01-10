@@ -1,0 +1,40 @@
+{
+  "lat": 16.845030033987992,
+  "long": 96.18416904564721,
+  "type": 2,
+  "ward": "",
+  "price": [240000000],
+  "images": [
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image.",
+    "No image."
+  ],
+  "street": "",
+  "address": "တောင်ဥက္ကလာပ ၁၀ရပ်ကွက်",
+  "contact": ["09786489900"],
+  "home_no": "",
+  "post_id": 2658709407646557,
+  "township": 29,
+  "image_url": "Testing url",
+  "town_name": "တောင်ဥက္ကလာပ",
+  "owner_type": "Agent",
+  "description": "မင်္ဂလာပါ🙏🙏🙏\nတောင်ဥက္ကလာပမြို့နယ်၊(၁၀)ရပ်ကွက်၊\nအသောက(၂၂)လမ်း၊မြေညီထပ်၊\nအရောင်းပါခင်ဗျာ၊\n\n💢မြေညီထပ်၊\nHigh (17')၊(19'×58')၊\nထပ်ခိုးပါ၊မီတာ(၂)လုံး၊\n\n💢စျေးသိန်း-(2400)ပိုမို\nပိုင်ရှင်တိုက်ရိုက်ညှိနိူင်း\n\n😍ဝယ်သူမှအကျိုးဆောင်ခလုံးဝ(လုံးဝ)ပေးစရာမလိုပါ၊\n\n💢အခန်းကြည့်လိုလျှင်(၁)ရက်ကြိုပြောပါ၊\n\n💢(၇)ရက်သားသမီးအားလုံးစိတ်ချမ်းသာ၍ ကိုယ်ကျန်းမာကြပါစေ၊သောကဗျာပါဒများ ဘေးမသန်းဘဲ လောက အဝန်း အေးချမ်းကြပါစေ၊\n🙏🙏🙏\n\n🔯TOT POWER🔯\nလျှပ်စစ်ဝန်ဆောင်မူနှင့်အိမ်ခြံမြေအကျိုးဆောင်\nCb(or)Viber\n☎09786489900",
+  "payment_term": "",
+  "building_info": "",
+  "location_type": "near_by",
+  "floor_attribute": "မြေညီထပ်",
+  "apartment_attribute": {
+    "aircon": false,
+    "toilet_seat": false,
+    "ceramic_floor": false,
+    "parquet_floor": false
+  }
+}
