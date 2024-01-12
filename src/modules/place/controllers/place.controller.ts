@@ -12,6 +12,7 @@ import Demo from '../../../models/demon.model';
 import errorResponse from '../../../utils/errorResponse';
 import UserService from '../../user/services/user.service';
 import getPaginationData from '../../../utils/getPagination';
+import { lastPage } from '../../../utils/lastPage';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -98,6 +99,7 @@ export default class PlaceController {
       return successResponse(req, res, null, {
         user_places: rows,
         total: count,
+        lastPage: lastPage(count),
       });
     } catch (error) {
       handleError(req, res, error);

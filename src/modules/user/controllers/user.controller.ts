@@ -15,6 +15,7 @@ import likeSearch from '../../../utils/likeSearch';
 import successResponse from '../../../utils/successResponse';
 import AuthService from '../../auth/services/auth.service';
 import getPaginationData from '../../../utils/getPagination';
+import { lastPage } from '../../../utils/lastPage';
 
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
@@ -187,7 +188,11 @@ export default class UserController {
         ],
       });
 
-      return successResponse(req, res, null, { users: rows, total: count });
+      return successResponse(req, res, null, {
+        users: rows,
+        total: count,
+        lastPage: lastPage(count),
+      });
     } catch (error) {
       handleError(req, res, error);
     }

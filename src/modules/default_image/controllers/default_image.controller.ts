@@ -4,6 +4,7 @@ import DefaultImage from '../../../models/default_image.model';
 import successResponse from '../../../utils/successResponse';
 import { AppMessage } from '../../../constants/app_message';
 import getPaginationData from '../../../utils/getPagination';
+import { lastPage } from '../../../utils/lastPage';
 
 export default class DefaultImageController {
   static createDefaultImage = async (req: Request, res: Response) => {
@@ -79,6 +80,7 @@ export default class DefaultImageController {
       return successResponse(req, res, null, {
         defaultImages: rows,
         total: count,
+        lastPage: lastPage(count),
       });
     } catch (error) {
       handleError(req, res, error);

@@ -5,6 +5,7 @@ import UserService from '../../user/services/user.service';
 import successResponse from '../../../utils/successResponse';
 import getPaginationData from '../../../utils/getPagination';
 import { AppMessage } from '../../../constants/app_message';
+import { lastPage } from '../../../utils/lastPage';
 
 export default class NotificationController {
   static allNotification = async (req: Request, res: Response) => {
@@ -23,6 +24,7 @@ export default class NotificationController {
       return successResponse(req, res, null, {
         notifications: rows,
         total: count,
+        lastPage: lastPage(count),
       });
     } catch (error) {
       handleError(req, res, error);
@@ -48,6 +50,7 @@ export default class NotificationController {
       return successResponse(req, res, null, {
         notifications: rows,
         total: count,
+        lastPage: lastPage(count),
       });
     } catch (error) {
       handleError(req, res, error);

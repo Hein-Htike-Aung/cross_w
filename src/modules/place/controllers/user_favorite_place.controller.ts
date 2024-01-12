@@ -8,6 +8,7 @@ import UserService from '../../user/services/user.service';
 import Place from '../../../models/place.model';
 import UserPlace from '../../../models/user_place.model';
 import NayarUser from '../../../models/nayar_user.model';
+import { lastPage } from '../../../utils/lastPage';
 
 export default class UserFavoritePlaceController {
   static toggleFavorite = async (req: Request, res: Response) => {
@@ -73,6 +74,7 @@ export default class UserFavoritePlaceController {
       return successResponse(req, res, null, {
         favorite_places: rows,
         total: count,
+        lastPage: lastPage(count),
       });
     } catch (error) {
       handleError(req, res, error);
