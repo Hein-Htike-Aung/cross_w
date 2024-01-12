@@ -19,6 +19,7 @@ import UserFavoritePlaceRouter from './modules/place/routes/user_favorite_place.
 import DefaultImageRouter from './modules/default_image/routes/default_image.route';
 import NotificationRouter from './modules/notification/routes/notification.route';
 import PlaceOwnerRouter from './modules/place/routes/place_owner.route';
+import DashboardRouter from './modules/dashboard/routes/dashboard.route';
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use('/api', UserFavoritePlaceRouter);
 app.use('/api', DefaultImageRouter);
 app.use('/api', NotificationRouter);
 app.use('/api', PlaceOwnerRouter);
+app.use('/api', DashboardRouter);
 
 fileUploadRoutes(app);
 

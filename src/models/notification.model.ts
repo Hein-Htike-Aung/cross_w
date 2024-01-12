@@ -9,6 +9,7 @@ import { CATEGORY } from '../types';
 import { sequelize } from '.';
 import NayarUser from './nayar_user.model';
 import Place from './place.model';
+import UserPlace from './user_place.model';
 
 export default class Notification extends Model<
   InferAttributes<Notification>,
@@ -119,12 +120,12 @@ NayarUser.hasMany(Notification, {
 });
 
 /*  */
-Notification.belongsTo(Place, {
+Notification.belongsTo(UserPlace, {
   foreignKey: 'place_id',
   as: 'place',
 });
 
-Place.hasMany(Notification, {
+UserPlace.hasMany(Notification, {
   foreignKey: 'place_id',
   as: 'notifications',
 });

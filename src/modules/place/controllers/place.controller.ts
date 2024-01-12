@@ -13,6 +13,7 @@ import errorResponse from '../../../utils/errorResponse';
 import UserService from '../../user/services/user.service';
 import getPaginationData from '../../../utils/getPagination';
 import { lastPage } from '../../../utils/lastPage';
+import Township from '../../../models/township.model';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -76,6 +77,10 @@ export default class PlaceController {
           {
             model: NayarUser,
             as: 'nayar_user',
+          },
+          {
+            model: Township,
+            as: 'township',
           },
         ],
         where: {

@@ -8,6 +8,7 @@ import {
 import { PLACE_OWNER_TYPE, PLACE_TYPE } from '../types';
 import { sequelize } from '.';
 import NayarUser from './nayar_user.model';
+import Township from './township.model';
 
 export default class UserPlace extends Model<
   InferAttributes<UserPlace>,
@@ -31,7 +32,7 @@ export default class UserPlace extends Model<
   declare payment: JSON;
   declare home_no: string;
   declare street: string;
-  declare township: string;
+  declare township_id: number;
   declare ward: string;
   declare division: string;
   declare floor: number;
@@ -92,8 +93,12 @@ UserPlace.init(
     street: {
       type: DataTypes.STRING,
     },
-    township: {
-      type: DataTypes.STRING,
+    township_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'township',
+        key: 'id',
+      },
     },
     ward: {
       type: DataTypes.STRING,
@@ -193,5 +198,15 @@ UserPlace.belongsTo(NayarUser, {
 
 NayarUser.hasMany(UserPlace, {
   foreignKey: 'user_id',
+  as: 'user_places',
+});
+
+UserPlace.belongsTo(Township, {
+  foreignKey: 'township_id',
+  as: 'township',
+});
+
+Township.hasMany(UserPlace, {
+  foreignKey: 'township_id',
   as: 'user_places',
 });
