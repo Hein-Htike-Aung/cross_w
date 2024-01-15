@@ -9,31 +9,30 @@ const s3 = new AWS.S3({
   secretAccessKey: process.env.DO_SPACES_SECRET,
 });
 
-const uploadFile = async (
-  files: any,
-  contentType: string,
-  cbFn: (url: string) => void,
-) => {
-  if (!files) return;
+const uploadFile = async (files: any, contentType: string) => {
+  if (!files) return '';
 
   const fileKey = new Date().getTime() + files.name;
 
-  s3.putObject(
-    {
-      Bucket: process.env.DO_SPACES_BUCKET || '',
-      Key: fileKey,
-      Body: fs.createReadStream(files.tempFilePath),
-      ACL: 'public-read',
-      ContentType: contentType,
-    },
-    (err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        cbFn(`https://nayar-fs.sgp1.digitaloceanspaces.com/${fileKey}`);
-      }
-    },
-  );
+  return new Promise((resolve, reject) => {
+    s3.putObject(
+      {
+        Bucket: process.env.DO_SPACES_BUCKET || '',
+        Key: fileKey,
+        Body: fs.createReadStream(files.tempFilePath),
+        ACL: 'public-read',
+        ContentType: contentType,
+      },
+      (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(`https://nayar-fs.sgp1.digitaloceanspaces.com/${fileKey}`);
+        }
+      },
+    );
+  });
 };
 
 export default uploadFile;

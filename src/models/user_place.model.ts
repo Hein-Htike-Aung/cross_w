@@ -27,7 +27,6 @@ export default class UserPlace extends Model<
   declare deposit_amount: number;
   declare agent_fee: string;
 
-  declare contact: string;
   declare contact_channel: JSON;
   declare payment: JSON;
   declare home_no: string;
@@ -55,6 +54,25 @@ export default class UserPlace extends Model<
   declare description: string;
   declare contract_term: string;
   declare payment_term: string;
+
+  /* 
+    images json
+    address string
+    contact array
+    image_url string
+    town_name string
+    location_type string
+    floor attribute json
+    apartment_attribute json
+  */
+  declare image: CreationOptional<JSON>;
+  declare address: CreationOptional<string>;
+  declare contact: CreationOptional<JSON>;
+  declare image_url: CreationOptional<string>;
+  declare town_name: CreationOptional<string>;
+  declare location_type: CreationOptional<string>;
+  declare floor_attribute: CreationOptional<JSON>;
+  declare apartment_attribute: CreationOptional<JSON>;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
@@ -85,7 +103,7 @@ UserPlace.init(
       type: DataTypes.ENUM('Agent', 'Private Owner', 'Company Agent'),
     },
     contact: {
-      type: DataTypes.STRING,
+      type: DataTypes.JSON,
     },
     home_no: {
       type: DataTypes.STRING,
@@ -171,6 +189,27 @@ UserPlace.init(
     },
     bus_stop: {
       type: DataTypes.STRING,
+    },
+    image: {
+      type: DataTypes.JSONB,
+    },
+    address: {
+      type: DataTypes.STRING,
+    },
+    image_url: {
+      type: DataTypes.STRING,
+    },
+    town_name: {
+      type: DataTypes.STRING,
+    },
+    location_type: {
+      type: DataTypes.STRING,
+    },
+    floor_attribute: {
+      type: DataTypes.JSONB,
+    },
+    apartment_attribute: {
+      type: DataTypes.JSONB,
     },
     created_at: {
       type: DataTypes.DATE(6),
