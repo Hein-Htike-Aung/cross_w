@@ -312,7 +312,7 @@ export default class PlaceController {
 
       const targetLatitude = lat;
       const targetLongitude = long;
-      const distanceInMiles = mile; // Set your desired distance in miles
+      const distanceInMiles = mile || 1.5; // Set your desired distance in miles
 
       const user_places_ids = await UserPlace.findAll({
         attributes: [
