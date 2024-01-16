@@ -228,6 +228,8 @@ export default class PlaceController {
         owner_type,
       } = req.query;
 
+      const { offset, limit } = getPaginationData(req.query);
+
       const max = await UserPlace.findOne({
         order: [['price', 'desc']],
       });
@@ -237,6 +239,8 @@ export default class PlaceController {
       });
 
       const { rows, count } = await UserPlace.findAndCountAll({
+        limit,
+        offset,
         where: {
           near_bus_stop: {
             [Op.like]: likeSearch(near_bus_stop),
@@ -282,7 +286,11 @@ export default class PlaceController {
         ],
       });
 
-      return successResponse(req, res, null, { user_places: rows, count });
+      return successResponse(req, res, null, {
+        user_places: rows,
+        total: count,
+        lastPage: lastPage(count),
+      });
     } catch (error) {
       handleError(req, res, error);
     }
