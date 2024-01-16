@@ -72,6 +72,7 @@ export default class UserController {
       await NayarUser.update(
         {
           ...req.body,
+          is_update: true,
         },
         {
           where: {
@@ -80,7 +81,13 @@ export default class UserController {
         },
       );
 
-      return successResponse(req, res, AppMessage.updated);
+      const user = await NayarUser.findOne({
+        where: {
+          phone,
+        },
+      });
+
+      return successResponse(req, res, AppMessage.updated, { ...user });
     } catch (error) {
       handleError(req, res, error);
     }

@@ -253,6 +253,9 @@ export default class PlaceController {
           owner_type: {
             [Op.like]: likeSearch(owner_type),
           },
+          price: {
+            [Op.between]: [Number(min_price || min), Number(max_price || max)],
+          },
         },
         order: [['id', 'desc']],
         include: [
