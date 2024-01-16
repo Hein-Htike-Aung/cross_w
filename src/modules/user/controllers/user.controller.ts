@@ -66,7 +66,7 @@ export default class UserController {
       });
 
       if (isDuplicatedRecord(existingUser, user_id)) {
-        return errorResponse(req, res, 403, AppMessage.alreadyExists);
+        return errorResponse(req, res, 400, AppMessage.alreadyExists);
       }
 
       await NayarUser.update(

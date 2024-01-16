@@ -14,6 +14,8 @@ import UserService from '../../user/services/user.service';
 import getPaginationData from '../../../utils/getPagination';
 import { lastPage } from '../../../utils/lastPage';
 import Township from '../../../models/township.model';
+import likeSearch from '../../../utils/likeSearch';
+import { Op } from 'sequelize';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -173,11 +175,111 @@ export default class PlaceController {
 
   static placeData = async (req: Request, res: Response) => {
     try {
-      await Demo.create({
-        data: req.body,
+      const data = req.body;
+
+      const type = {
+        '0': 'Hostel',
+        '1': 'Rent',
+        '2': 'Sell',
+      };
+
+      await UserPlace.create({
+        type: (type as any)[data.type],
+        price: data.price[0],
+        township_id: data.township,
+        owner_type: data.owner_type,
+        building_info: data.building_info,
+        payment: data.payment,
+        home_no: data.home_no,
+        street: data.street,
+        ward: data.ward,
+
+        lat: data.lat,
+        long: data.long,
+
+        description: data.description,
+        images: data.images,
+        address: data.address,
+        contact: data.contact,
+        image_url: data.image_url,
+        town_name: data.town_name,
+        location_type: data.location_type,
+        floor_attribute: data.floor_attribute,
+        apartment_attribute: data.apartment_attribute,
       });
 
       return successResponse(req, res, AppMessage.created);
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static allPlaceList = async (req: Request, res: Response) => {
+    try {
+      const {
+        township,
+        near_bus_stop,
+        near_hospital,
+        near_market,
+        min_price,
+        max_price,
+        type,
+        owner_name,
+        owner_type,
+      } = req.query;
+
+      const max = await UserPlace.findOne({
+        order: [['price', 'desc']],
+      });
+
+      const min = await UserPlace.findOne({
+        order: [['price', 'asc']],
+      });
+
+      const { rows, count } = await UserPlace.findAndCountAll({
+        where: {
+          near_bus_stop: {
+            [Op.like]: likeSearch(near_bus_stop),
+          },
+          near_hospital: {
+            [Op.like]: likeSearch(near_hospital),
+          },
+          near_market: {
+            [Op.like]: likeSearch(near_market),
+          },
+          type: {
+            [Op.like]: likeSearch(type),
+          },
+          owner_type: {
+            [Op.like]: likeSearch(owner_type),
+          },
+        },
+        order: [['id', 'desc']],
+        include: [
+          {
+            model: NayarUser,
+            as: 'nayar_user',
+            required: false,
+            where: {
+              name: {
+                [Op.like]: likeSearch(owner_name),
+              },
+            },
+          },
+          {
+            model: Township,
+            as: 'township',
+            required: false,
+            where: {
+              name: {
+                [Op.like]: likeSearch(township),
+              },
+            },
+          },
+        ],
+      });
+
+      return successResponse(req, res, null, { user_places: rows, count });
     } catch (error) {
       handleError(req, res, error);
     }

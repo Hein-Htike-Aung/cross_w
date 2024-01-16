@@ -22,4 +22,6 @@ router.delete(
 
 router.post('/v1/place_data', PlaceController.placeData);
 
+router.get('/v1/all_places', PlaceController.allPlaceList);
+
 export default router;

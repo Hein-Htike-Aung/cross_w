@@ -1,3 +1,3 @@
-const likeSearch = (value: string) => `%${value || ''}%`;
+const likeSearch = (value: any) => `%${value || ''}%`;
 
 export default likeSearch;

@@ -128,13 +128,16 @@ UserPlace.init(
       type: DataTypes.DECIMAL,
     },
     near_bus_stop: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
+      defaultValue: false,
     },
     near_market: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
+      defaultValue: false,
     },
     near_hospital: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
+      defaultValue: false,
     },
     aircon: {
       type: DataTypes.INTEGER,
