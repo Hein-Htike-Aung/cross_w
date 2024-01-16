@@ -16,6 +16,7 @@ import { lastPage } from '../../../utils/lastPage';
 import Township from '../../../models/township.model';
 import likeSearch from '../../../utils/likeSearch';
 import { Op } from 'sequelize';
+import { sequelize } from '../../../models';
 
 export default class PlaceController {
   static addPlace = async (req: Request, res: Response) => {
@@ -291,6 +292,33 @@ export default class PlaceController {
         total: count,
         lastPage: lastPage(count),
       });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static placesByTownship = async (req: Request, res: Response) => {
+    try {
+      const townships = await Township.findAll({
+        attributes: [
+          'id',
+          'name',
+          [
+            sequelize.literal(
+              '(SELECT COUNT(*) FROM "user_place" WHERE "user_place"."township_id" = "Township"."id")',
+            ),
+            'user_place_count',
+          ],
+        ],
+        include: [
+          {
+            model: UserPlace,
+            as: 'user_places',
+          },
+        ],
+      });
+
+      return successResponse(req, res, null, { townships });
     } catch (error) {
       handleError(req, res, error);
     }
