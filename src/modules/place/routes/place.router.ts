@@ -24,6 +24,8 @@ router.post('/v1/place_data', PlaceController.placeData);
 
 router.get('/v1/all_places', PlaceController.allPlaceList);
 
+router.get('/v1/places_by_miles', PlaceController.PlaceListByMiles);
+
 router.get('/v1/places_by_townships', PlaceController.placesByTownship);
 
 export default router;

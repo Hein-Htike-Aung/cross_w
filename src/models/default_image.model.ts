@@ -14,8 +14,8 @@ export default class DefaultImage extends Model<
 > {
   declare id: CreationOptional<number>;
 
-  declare lat: number;
-  declare long: number;
+  declare latitude: number;
+  declare longitude: number;
   declare image: string;
 
   declare created_at: CreationOptional<Date>;
@@ -29,11 +29,11 @@ DefaultImage.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
     },
-    lat: {
+    latitude: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    long: {
+    longitude: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },

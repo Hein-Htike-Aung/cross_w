@@ -82,8 +82,8 @@ export const fileUploadRoutes = (app: Express) => {
           street: a.street,
           ward: a.ward, 
 
-          lat: a.lat,
-          long: a.long,
+          latitude: a.lat,
+          longitude: a.long,
 
           description: a.description,
           images: a.images,

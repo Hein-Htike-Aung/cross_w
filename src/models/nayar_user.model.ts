@@ -27,8 +27,8 @@ export default class NayarUser extends Model<
   declare is_disable: boolean;
   declare type: USER_TYPE;
   declare user_level: USER_LEVEL;
-  declare long: CreationOptional<number>;
-  declare lat: CreationOptional<number>;
+  declare longitude: CreationOptional<number>;
+  declare latitude: CreationOptional<number>;
   declare device_token: CreationOptional<string>;
   declare address: CreationOptional<string>;
   declare email: CreationOptional<string>;
@@ -104,11 +104,11 @@ NayarUser.init(
     user_level: {
       type: DataTypes.ENUM('LEVEL_1', 'LEVEL_2'),
     },
-    long: {
+    longitude: {
       type: DataTypes.DECIMAL,
       allowNull: true,
     },
-    lat: {
+    latitude: {
       type: DataTypes.DECIMAL,
       allowNull: true,
     },

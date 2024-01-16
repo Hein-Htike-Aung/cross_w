@@ -38,8 +38,8 @@ export default class UserPlace extends Model<
   declare house_holding_size: CreationOptional<number>;
   declare sqft: CreationOptional<string>;
 
-  declare lat: CreationOptional<number>;
-  declare long: CreationOptional<number>;
+  declare latitude: CreationOptional<number>;
+  declare longitude: CreationOptional<number>;
 
   declare parking: CreationOptional<number>;
   declare bus_stop: CreationOptional<string>;
@@ -123,10 +123,10 @@ UserPlace.init(
     ward: {
       type: DataTypes.STRING,
     },
-    lat: {
+    latitude: {
       type: DataTypes.DECIMAL,
     },
-    long: {
+    longitude: {
       type: DataTypes.DECIMAL,
     },
     near_bus_stop: {

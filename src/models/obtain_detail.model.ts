@@ -18,8 +18,8 @@ export default class ObtainDetails extends Model<
 
   declare owner_type: string;
   declare contact: string;
-  declare long: number;
-  declare lat: number;
+  declare longitude: number;
+  declare latitude: number;
   declare near_market: boolean;
   declare near_hospital: boolean;
   declare near_bus_stop: boolean;
@@ -68,11 +68,11 @@ ObtainDetails.init(
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    long: {
+    longitude: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    lat: {
+    latitude: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },

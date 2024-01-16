@@ -178,36 +178,40 @@ export default class PlaceController {
     try {
       const data = req.body;
 
-      const type = {
-        '0': 'Hostel',
-        '1': 'Rent',
-        '2': 'Sell',
-      };
-
-      await UserPlace.create({
-        type: (type as any)[data.type],
-        price: data.price[0],
-        township_id: data.township,
-        owner_type: data.owner_type,
-        building_info: data.building_info,
-        payment: data.payment,
-        home_no: data.home_no,
-        street: data.street,
-        ward: data.ward,
-
-        lat: data.lat,
-        long: data.long,
-
-        description: data.description,
-        images: data.images,
-        address: data.address,
-        contact: data.contact,
-        image_url: data.image_url,
-        town_name: data.town_name,
-        location_type: data.location_type,
-        floor_attribute: data.floor_attribute,
-        apartment_attribute: data.apartment_attribute,
+      await Demo.create({
+        data: req.body,
       });
+
+      // const type = {
+      //   '0': 'Hostel',
+      //   '1': 'Rent',
+      //   '2': 'Sell',
+      // };
+
+      // await UserPlace.create({
+      //   type: (type as any)[data.type],
+      //   price: data.price[0],
+      //   township_id: data.township,
+      //   owner_type: data.owner_type,
+      //   building_info: data.building_info,
+      //   payment: data.payment,
+      //   home_no: data.home_no,
+      //   street: data.street,
+      //   ward: data.ward,
+
+      //   latitude: data.lat,
+      //   longitude: data.long,
+
+      //   description: data.description,
+      //   images: data.images,
+      //   address: data.address,
+      //   contact: data.contact,
+      //   image_url: data.image_url,
+      //   town_name: data.town_name,
+      //   location_type: data.location_type,
+      //   floor_attribute: data.floor_attribute,
+      //   apartment_attribute: data.apartment_attribute,
+      // });
 
       return successResponse(req, res, AppMessage.created);
     } catch (error) {
@@ -291,6 +295,32 @@ export default class PlaceController {
         user_places: rows,
         total: count,
         lastPage: lastPage(count),
+      });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
+  static PlaceListByMiles = async (req: Request, res: Response) => {
+    try {
+      const { lat, long } = req.query;
+
+      const ONE_MILE_IN_METERS = 1609.34; // 1 mile in meters
+
+      const user_places = await UserPlace.findAll({
+        where: sequelize.where(
+          sequelize.fn(
+            'ST_Distance',
+            sequelize.fn('POINT', sequelize.literal(`POINT(${lat} ${long})`)),
+            sequelize.fn('POINT', sequelize.literal(`POINT(lat long)`)),
+          ),
+          { [Op.lte]: ONE_MILE_IN_METERS },
+        ),
+        order: [['id', 'desc']],
+      });
+
+      return successResponse(req, res, null, {
+        user_places,
       });
     } catch (error) {
       handleError(req, res, error);
