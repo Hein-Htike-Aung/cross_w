@@ -16,44 +16,44 @@ export default class UserPlace extends Model<
 > {
   declare id: CreationOptional<number>;
 
-  declare user_id: number;
+  declare user_id: CreationOptional<number>;
 
-  declare type: PLACE_TYPE;
-  declare owner_type: PLACE_OWNER_TYPE;
-  declare building_info: string; // flat, villa, condo, hostel
+  declare type: CreationOptional<PLACE_TYPE>;
+  declare owner_type: CreationOptional<PLACE_OWNER_TYPE>;
+  declare building_info: CreationOptional<string>; // flat, villa, condo, hoste>;
 
-  declare price: number;
-  declare has_deposit: boolean;
-  declare deposit_amount: number;
-  declare agent_fee: string;
+  declare price: CreationOptional<number>;
+  declare has_deposit: CreationOptional<boolean>;
+  declare deposit_amount: CreationOptional<number>;
+  declare agent_fee: CreationOptional<string>;
 
-  declare contact_channel: JSON;
-  declare payment: JSON;
-  declare home_no: string;
-  declare street: string;
-  declare township_id: number;
-  declare ward: string;
-  declare division: string;
-  declare floor: number;
-  declare house_holding_size: number;
-  declare sqft: string;
+  declare contact_channel: CreationOptional<JSON>;
+  declare payment: CreationOptional<JSON>;
+  declare home_no: CreationOptional<string>;
+  declare street: CreationOptional<string>;
+  declare township_id: CreationOptional<number>;
+  declare ward: CreationOptional<string>;
+  declare division: CreationOptional<string>;
+  declare floor: CreationOptional<number>;
+  declare house_holding_size: CreationOptional<number>;
+  declare sqft: CreationOptional<string>;
 
-  declare lat: number;
-  declare long: number;
+  declare lat: CreationOptional<number>;
+  declare long: CreationOptional<number>;
 
-  declare parking: number;
-  declare bus_stop: string;
-  declare near_bus_stop: string;
-  declare near_market: string;
-  declare near_hospital: string;
+  declare parking: CreationOptional<number>;
+  declare bus_stop: CreationOptional<string>;
+  declare near_bus_stop: CreationOptional<string>;
+  declare near_market: CreationOptional<string>;
+  declare near_hospital: CreationOptional<string>;
 
-  declare aircon: string;
-  declare bath_toilet: string;
-  declare bedroom: string;
+  declare aircon: CreationOptional<string>;
+  declare bath_toilet: CreationOptional<string>;
+  declare bedroom: CreationOptional<string>;
 
-  declare description: string;
-  declare contract_term: string;
-  declare payment_term: string;
+  declare description: CreationOptional<string>;
+  declare contract_term: CreationOptional<string>;
+  declare payment_term: CreationOptional<string>;
 
   /* 
     images json
@@ -65,7 +65,7 @@ export default class UserPlace extends Model<
     floor attribute json
     apartment_attribute json
   */
-  declare image: CreationOptional<JSON>;
+  declare images: CreationOptional<JSON>;
   declare address: CreationOptional<string>;
   declare contact: CreationOptional<JSON>;
   declare image_url: CreationOptional<string>;
@@ -94,13 +94,13 @@ UserPlace.init(
       },
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(),
     },
     type: {
       type: DataTypes.ENUM('Hostel', 'Rent', 'Sell'),
     },
     owner_type: {
-      type: DataTypes.ENUM('Agent', 'Private Owner', 'Company Agent'),
+      type: DataTypes.ENUM('Agent', 'Private_owner', 'Company_agent'),
     },
     contact: {
       type: DataTypes.JSON,
@@ -190,7 +190,7 @@ UserPlace.init(
     bus_stop: {
       type: DataTypes.STRING,
     },
-    image: {
+    images: {
       type: DataTypes.JSONB,
     },
     address: {

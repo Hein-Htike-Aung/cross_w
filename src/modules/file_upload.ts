@@ -5,6 +5,8 @@ import { AppMessage } from '../constants/app_message';
 import uploadFile from '../utils/uploadFile';
 import successResponse from '../utils/successResponse';
 import handleError from '../utils/handleError';
+import Demo from '../models/demon.model';
+import UserPlace from '../models/user_place.model';
 
 export const fileUploadRoutes = (app: Express) => {
   /* Admin file upload */
@@ -54,5 +56,48 @@ export const fileUploadRoutes = (app: Express) => {
     } catch (error) {
       handleError(req, res, error);
     }
+  });
+
+  app.post('/tt', async (req: Request, res: Response) => {
+    const data = await Demo.findAll();
+
+    await Promise.all(
+      data.map(async (d: any) => {
+        const a = d.data;
+
+        const type = {
+          '0': 'Hostel',
+          '1': 'Rent',
+          '2': 'Sell',
+        };
+
+        await UserPlace.create({
+          type: (type as any)[a.type],
+          price: a.price[0],
+          township_id: a.township,
+          owner_type: a.owner_type,
+          building_info: a.building_info,
+          payment: a.payment,
+          home_no: a.home_no,
+          street: a.street,
+          ward: a.ward, 
+
+          lat: a.lat,
+          long: a.long,
+
+          description: a.description,
+          images: a.images,
+          address: a.address,
+          contact: a.contact,
+          image_url: a.image_url,
+          town_name: a.town_name,
+          location_type: a.location_type,
+          floor_attribute: a.floor_attribute,
+          apartment_attribute: a.apartment_attribute,
+        });
+      }),
+    );
+
+    res.json('tt');
   });
 };

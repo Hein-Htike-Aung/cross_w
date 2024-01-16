@@ -25,8 +25,8 @@ export enum LOGIN_PROVIDER {
 
 export enum PLACE_OWNER_TYPE {
   'Agent' = 'Agent',
-  'Private Owner' = 'Private Owner',
-  'Company Agent' = 'Company Agent',
+  'Private_owner' = 'Private_owner',
+  'Company_agent' = 'Company_agent',
 }
 
 export enum PLACE_TYPE {

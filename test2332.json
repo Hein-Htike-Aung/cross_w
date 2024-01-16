@@ -1,0 +1,9 @@
+{
+  "location_type": "on_street",
+  "apartment_attribute": {
+    "aircon": false,
+    "toilet_seat": false,
+    "ceramic_floor": true,
+    "parquet_floor": false
+  }
+}
