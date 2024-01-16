@@ -23,7 +23,7 @@ export default class NayarUser extends Model<
   declare ward: CreationOptional<string>;
   declare street: CreationOptional<string>;
   declare password: string;
-  declare image_url: CreationOptional<string>;
+  declare image: CreationOptional<string>;
   declare is_disable: boolean;
   declare type: USER_TYPE;
   declare user_level: USER_LEVEL;
@@ -80,7 +80,7 @@ NayarUser.init(
     password: {
       type: DataTypes.STRING,
     },
-    image_url: {
+    image: {
       type: DataTypes.STRING,
       allowNull: true,
     },

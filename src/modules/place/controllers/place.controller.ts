@@ -248,10 +248,10 @@ export default class PlaceController {
             [Op.like]: likeSearch(near_market),
           },
           type: {
-            [Op.eq]: type as string,
+            [Op.like]: likeSearch(type),
           },
           owner_type: {
-            [Op.eq]: owner_type as string,
+            [Op.like]: likeSearch(owner_type),
           },
           price: {
             [Op.between]: [Number(min_price || min), Number(max_price || max)],

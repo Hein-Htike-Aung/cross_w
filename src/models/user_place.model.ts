@@ -97,10 +97,12 @@ UserPlace.init(
       type: DataTypes.DECIMAL(),
     },
     type: {
-      type: DataTypes.ENUM('Hostel', 'Rent', 'Sell'),
+      // type: DataTypes.ENUM('Hostel', 'Rent', 'Sell'),
+      type: DataTypes.STRING,
     },
     owner_type: {
-      type: DataTypes.ENUM('Agent', 'Private_owner', 'Company_agent'),
+      // type: DataTypes.ENUM('Agent', 'Private_owner', 'Company_agent'),
+      type: DataTypes.STRING,
     },
     contact: {
       type: DataTypes.JSON,
