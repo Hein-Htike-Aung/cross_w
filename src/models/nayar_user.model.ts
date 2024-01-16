@@ -37,6 +37,7 @@ export default class NayarUser extends Model<
   declare provider: CreationOptional<LOGIN_PROVIDER>;
   declare notification_on: boolean;
   declare system_notification: boolean;
+  declare country: CreationOptional<string>;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
@@ -68,6 +69,9 @@ NayarUser.init(
     home_no: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    country: {
+      type: DataTypes.STRING,
     },
     ward: {
       type: DataTypes.STRING,
