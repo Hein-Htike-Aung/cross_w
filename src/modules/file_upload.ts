@@ -45,7 +45,6 @@ export const fileUploadRoutes = (app: Express) => {
             const url = await uploadFile(file as UploadedFile, 'image/png');
             resolve(url);
           });
-          console.log({ url });
           if (url) {
             files_arr.push(url);
           }
@@ -71,30 +70,32 @@ export const fileUploadRoutes = (app: Express) => {
           '2': 'Sell',
         };
 
-        await UserPlace.create({
-          type: (type as any)[a.type],
-          price: a.price[0],
-          township_id: a.township,
-          owner_type: a.owner_type,
-          building_info: a.building_info,
-          payment: a.payment,
-          home_no: a.home_no,
-          street: a.street,
-          ward: a.ward, 
+        if (a.township) {
+          await UserPlace.create({
+            type: (type as any)[a.type],
+            price: a.price[0],
+            township_id: Number(a.township),
+            owner_type: a.owner_type,
+            building_info: a.building_info,
+            payment: a.payment,
+            home_no: a.home_no,
+            street: a.street,
+            ward: a.ward,
 
-          latitude: a.lat,
-          longitude: a.long,
+            latitude: a.lat,
+            longitude: a.long,
 
-          description: a.description,
-          images: a.images,
-          address: a.address,
-          contact: a.contact,
-          image_url: a.image_url,
-          town_name: a.town_name,
-          location_type: a.location_type,
-          floor_attribute: a.floor_attribute,
-          apartment_attribute: a.apartment_attribute,
-        });
+            description: a.description,
+            images: a.images,
+            address: a.address,
+            contact: a.contact,
+            image_url: a.image_url,
+            town_name: a.town_name,
+            location_type: a.location_type,
+            floor_attribute: a.floor_attribute,
+            apartment_attribute: a.apartment_attribute,
+          });
+        }
       }),
     );
 

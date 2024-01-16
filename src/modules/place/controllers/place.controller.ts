@@ -236,10 +236,12 @@ export default class PlaceController {
       const { offset, limit } = getPaginationData(req.query);
 
       const max = await UserPlace.findOne({
+        attributes: ['price'],
         order: [['price', 'desc']],
       });
 
       const min = await UserPlace.findOne({
+        attributes: ['price'],
         order: [['price', 'asc']],
       });
 
@@ -263,7 +265,10 @@ export default class PlaceController {
             [Op.like]: likeSearch(owner_type),
           },
           price: {
-            [Op.between]: [Number(min_price || min), Number(max_price || max)],
+            [Op.between]: [
+              Number(min_price || min?.price),
+              Number(max_price || max?.price),
+            ],
           },
         },
         order: [['id', 'desc']],
@@ -303,24 +308,111 @@ export default class PlaceController {
 
   static PlaceListByMiles = async (req: Request, res: Response) => {
     try {
-      const { lat, long } = req.query;
+      const { lat, long, mile } = req.query;
 
-      const ONE_MILE_IN_METERS = 1609.34; // 1 mile in meters
+      const targetLatitude = lat;
+      const targetLongitude = long;
+      const distanceInMiles = mile; // Set your desired distance in miles
+
+      const user_places_ids = await UserPlace.findAll({
+        attributes: [
+          'id',
+          [
+            sequelize.literal(
+              `(6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))) * 0.621371`,
+            ),
+            'distance_in_miles',
+          ],
+        ],
+        where: sequelize.where(
+          sequelize.literal(
+            `(6371 * acos(cos(radians(${targetLatitude})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${targetLongitude})) + sin(radians(${targetLatitude})) * sin(radians(latitude)))) * 0.621371`,
+          ),
+          '<=',
+          distanceInMiles,
+        ),
+      });
+
+      const ids: any = [];
+      user_places_ids.forEach((place) => ids.push(place.id));
+
+      const {
+        township,
+        near_bus_stop,
+        near_hospital,
+        near_market,
+        min_price,
+        max_price,
+        type,
+        owner_name,
+        owner_type,
+      } = req.query;
+
+      const { offset, limit } = getPaginationData(req.query);
+
+      const max = await UserPlace.findOne({
+        attributes: ['price'],
+        order: [['price', 'desc']],
+      });
+
+      const min = await UserPlace.findOne({
+        attributes: ['price'],
+        order: [['price', 'asc']],
+      });
 
       const user_places = await UserPlace.findAll({
-        where: sequelize.where(
-          sequelize.fn(
-            'ST_Distance',
-            sequelize.fn('POINT', sequelize.literal(`POINT(${lat} ${long})`)),
-            sequelize.fn('POINT', sequelize.literal(`POINT(lat long)`)),
-          ),
-          { [Op.lte]: ONE_MILE_IN_METERS },
-        ),
+        where: {
+          id: ids,
+          near_bus_stop: {
+            [Op.like]: likeSearch(near_bus_stop),
+          },
+          near_hospital: {
+            [Op.like]: likeSearch(near_hospital),
+          },
+          near_market: {
+            [Op.like]: likeSearch(near_market),
+          },
+          type: {
+            [Op.like]: likeSearch(type),
+          },
+          owner_type: {
+            [Op.like]: likeSearch(owner_type),
+          },
+          price: {
+            [Op.between]: [
+              Number(min_price || min?.price),
+              Number(max_price || max?.price),
+            ],
+          },
+        },
         order: [['id', 'desc']],
+        include: [
+          {
+            model: NayarUser,
+            as: 'nayar_user',
+            required: false,
+            where: {
+              name: {
+                [Op.like]: likeSearch(owner_name),
+              },
+            },
+          },
+          {
+            model: Township,
+            as: 'township',
+            required: false,
+            where: {
+              name: {
+                [Op.like]: likeSearch(township),
+              },
+            },
+          },
+        ],
       });
 
       return successResponse(req, res, null, {
         user_places,
+        user_places_length: user_places.length,
       });
     } catch (error) {
       handleError(req, res, error);
