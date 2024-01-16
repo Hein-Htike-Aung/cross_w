@@ -87,7 +87,9 @@ export default class UserController {
         },
       });
 
-      return successResponse(req, res, AppMessage.updated, { ...user });
+      return successResponse(req, res, AppMessage.updated, {
+        ...user?.dataValues,
+      });
     } catch (error) {
       handleError(req, res, error);
     }
