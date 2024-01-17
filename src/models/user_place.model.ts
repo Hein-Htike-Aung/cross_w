@@ -73,6 +73,7 @@ export default class UserPlace extends Model<
   declare location_type: CreationOptional<string>;
   declare floor_attribute: CreationOptional<JSON>;
   declare apartment_attribute: CreationOptional<JSON>;
+  declare available: CreationOptional<boolean>;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
@@ -212,6 +213,10 @@ UserPlace.init(
     },
     floor_attribute: {
       type: DataTypes.JSONB,
+    },
+    available: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     apartment_attribute: {
       type: DataTypes.JSONB,
