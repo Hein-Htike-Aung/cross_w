@@ -123,6 +123,7 @@ NayarUser.init(
     email: {
       type: DataTypes.STRING,
       allowNull: true,
+      unique: true,
     },
     is_update: {
       type: DataTypes.BOOLEAN,

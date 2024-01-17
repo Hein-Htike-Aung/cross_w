@@ -10,8 +10,45 @@ import {
 import AuthService from '../services/auth.service';
 import { get, omit } from 'lodash';
 import UserService from '../../user/services/user.service';
+import { USER_TYPE } from '../../../types';
 
 export default class AuthController {
+  static adminLogin = async (req: Request, res: Response) => {
+    try {
+      const { email, password } = req.body;
+
+      const user = await NayarUser.findOne({
+        where: {
+          email,
+          type: USER_TYPE.ADMIN,
+        },
+      });
+
+      if (!user)
+        return errorResponse(req, res, 403, AppMessage.invalidCredential);
+
+      const validatedUser = await AuthService.validateUser<NayarUser>(
+        user,
+        password,
+      );
+
+      if (!validatedUser) {
+        return errorResponse(req, res, 403, AppMessage.invalidCredential);
+      }
+
+      const { access_token, refresh_token } =
+        AuthService.generateAuthToken<NayarUser>(user.dataValues, 'user');
+
+      return successResponse(req, res, null, {
+        access_token,
+        refresh_token,
+        ...omit(user.dataValues, 'password'),
+      });
+    } catch (error) {
+      handleError(req, res, error);
+    }
+  };
+
   static login = async (req: Request, res: Response) => {
     try {
       const { phone, password } = req.body;

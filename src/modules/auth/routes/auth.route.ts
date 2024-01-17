@@ -4,6 +4,8 @@ import jwt_auth from '../../../middlewares/jwt_auth';
 
 const router = express.Router();
 
+router.post('/v1/admin_login', AuthController.adminLogin);
+
 router.post('/v1/login', AuthController.login);
 
 router.post('/v1/loginWithProvider', AuthController.loginWithProvider);

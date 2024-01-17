@@ -20,11 +20,14 @@ import { lastPage } from '../../../utils/lastPage';
 export default class UserController {
   static createUser = async (req: Request, res: Response) => {
     try {
-      const { phone, password } = req.body;
+      const { phone, password, email } = req.body;
 
       const existingUser = await NayarUser.findOne({
         where: {
-          phone,
+          [Op.or]: {
+            phone,
+            email,
+          },
         },
       });
 
