@@ -34,7 +34,7 @@ model_list;
 
 app.use(
   cors({
-    origin: ['*'],
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
   }),
 );
 app.use(morgan('dev'));
