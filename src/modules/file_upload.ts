@@ -7,6 +7,8 @@ import successResponse from '../utils/successResponse';
 import handleError from '../utils/handleError';
 import Demo from '../models/demon.model';
 import UserPlace from '../models/user_place.model';
+import DefaultImage from '../models/default_image.model';
+import { sequelize } from '../models';
 
 export const fileUploadRoutes = (app: Express) => {
   /* Admin file upload */
@@ -70,6 +72,41 @@ export const fileUploadRoutes = (app: Express) => {
           '2': 'Sell',
         };
 
+        // default image
+        const defaultImage = await DefaultImage.findOne({
+          attributes: [
+            'id',
+            'image',
+            [
+              sequelize.fn(
+                'earth_distance',
+                sequelize.fn('ll_to_earth', a.lat, a.long),
+                sequelize.fn(
+                  'll_to_earth',
+                  sequelize.col('latitude'),
+                  sequelize.col('longitude'),
+                ),
+              ),
+              'distance',
+            ],
+          ],
+          order: [
+            [
+              sequelize.fn(
+                'earth_distance',
+                sequelize.fn('ll_to_earth', a.lat, a.long),
+                sequelize.fn(
+                  'll_to_earth',
+                  sequelize.col('latitude'),
+                  sequelize.col('longitude'),
+                ),
+              ),
+              'ASC',
+            ],
+          ],
+          limit: 1,
+        });
+
         if (a.township) {
           await UserPlace.create({
             type: (type as any)[a.type],
@@ -81,19 +118,18 @@ export const fileUploadRoutes = (app: Express) => {
             home_no: a.home_no,
             street: a.street,
             ward: a.ward,
-
+            location_type: a.location_type || 'unprecise',
             latitude: a.lat,
             longitude: a.long,
-
             description: a.description,
             images: a.images,
             address: a.address,
             contact: a.contact,
             image_url: a.image_url,
             town_name: a.town_name,
-            location_type: a.location_type,
             floor_attribute: a.floor_attribute,
             apartment_attribute: a.apartment_attribute,
+            default_image: defaultImage?.image,
           });
         }
       }),

@@ -216,6 +216,7 @@ UserPlace.init(
     },
     location_type: {
       type: DataTypes.STRING,
+      defaultValue: 'precise_location',
     },
     floor_attribute: {
       type: DataTypes.JSONB,
