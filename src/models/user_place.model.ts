@@ -74,6 +74,7 @@ export default class UserPlace extends Model<
   declare floor_attribute: CreationOptional<JSON>;
   declare apartment_attribute: CreationOptional<JSON>;
   declare available: CreationOptional<boolean>;
+  declare default_image: CreationOptional<string>;
 
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
@@ -192,6 +193,11 @@ UserPlace.init(
     },
     deposit_amount: {
       type: DataTypes.INTEGER,
+    },
+    default_image: {
+      type: DataTypes.STRING,
+      defaultValue:
+        'https://images.pexels.com/photos/18028809/pexels-photo-18028809/free-photo-of-typical-london.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load',
     },
     bus_stop: {
       type: DataTypes.STRING,
