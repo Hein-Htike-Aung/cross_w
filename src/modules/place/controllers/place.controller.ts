@@ -93,6 +93,7 @@ export default class PlaceController {
 
       await Promise.all(
         rows.map(async (up: any) => {
+          console.log(up.dataValues);
           const userFavoritePlace = await UserFavoritePlace.findOne({
             where: {
               user_id: user.id,
