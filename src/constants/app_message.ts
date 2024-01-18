@@ -1,14 +1,24 @@
 export const AppMessageUrlNotFound = (url: string) => {
-  return { en: `Not Found - ${url}`, my: `ရှာမတွေ့ပါ - ${url}`, cn: `` };
+  return { en: `Not Found - ${url}`, cn: `${url}`, th: `` };
 };
 
 export const AppMessageModelNotFound = (model: string) => {
-  return { en: `${model} not found`, my: `${model} မတွေ့ရှိပါ`, cn: `` };
+  return { en: `${model} not found`, cn: `${model}`, th: `` };
 };
 
 export type languages = 'en' | 'my' | 'cn';
 
 export const AppMessage = {
+  badRequest: {
+    en: 'Bad Request',
+    cn: '',
+    th: '',
+  },
+  checkout: {
+    en: 'Checked out',
+    cn: '',
+    th: '',
+  },
   created: {
     en: 'Created',
     my: '',
@@ -58,15 +68,5 @@ export const AppMessage = {
     en: 'Unauthorized',
     my: 'ဤလုပ်ဆောင်ချက်အား လုပ်ဆောင်ခွင့်မရှိပါ။',
     cn: '无法访问 请稍后重试',
-  },
-  addToFavorite: {
-    en: 'Add to favorite',
-    my: '',
-    cn: '',
-  },
-  removeToFavorite: {
-    en: 'Remove from favorite',
-    my: '',
-    cn: '',
   },
 };
