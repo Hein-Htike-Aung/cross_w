@@ -1,7 +1,7 @@
 
 FROM node:latest
 
-WORKDIR /nayar-app
+WORKDIR /cw-app
 
 COPY package*.json ./
 
@@ -13,6 +13,6 @@ COPY . .
 
 RUN npm run build
 
-WORKDIR /nayar-app/dist/src
+WORKDIR /cw-app/dist/src
 
 CMD ["pm2-runtime", "start", "index.js"]
